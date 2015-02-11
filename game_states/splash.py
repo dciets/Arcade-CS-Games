@@ -25,6 +25,8 @@ class Splash:
         print 'Lives', map(lambda p: p.lives, self.game.players)
 
     def run(self):
+        pygame.event.pump()
+
         if(self.started_at + timedelta(seconds=self._duration) < datetime.now()):
             self.game.state = minigame.Minigame(self.game)
 
