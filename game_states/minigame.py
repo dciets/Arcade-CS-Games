@@ -5,12 +5,17 @@ class Minigame:
     '''Play a minigame!'''
     def __init__(self, game):
         self.game = game
-        self.minigame = self.game.minigame(self.game.difficulty)
+        self.minigame = self.game.minigame(self.game.difficulty, game.screen, game.font)
         self.duration = self.minigame.get_duration()
         self.started_at = datetime.now()
+
+        self.minigame.init()
+
         print('In minigame!')
 
     def run(self):
+        self.minigame.run()
+
         if(self.started_at + timedelta(seconds=self.duration) < datetime.now()):
             results = self.minigame.get_results()
             for player, result in zip(self.game.players, results):

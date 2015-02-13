@@ -1,10 +1,30 @@
+import pygame
+from pygame.locals import *
 import minigame
 
 class STest(minigame.Minigame):
+    name = "Singleplayer Test"
     game_type = minigame.SINGLEPLAYER
 
-    def run():
-        pass
+    def init(self):
+        self.result = False
+
+    def run(self):
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                if event.key == K_w:
+                    self.result = True
+                elif event.key == K_l:
+                    self.result = False
+
+        self.clear_screen()
+        self.print_msg("[W]in or [L]ose", (50, 50))
+
+        if self.result:
+            self.print_msg("Winning", (50, 100), (0, 255, 0))
+        else:
+            self.print_msg("Losing", (50, 100), (255, 0, 0))
+
 
     def get_results(self):
-        return [False, True]
+        return [self.result, self.result]

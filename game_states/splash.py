@@ -1,3 +1,5 @@
+import pygame
+from pygame.locals import *
 from datetime import datetime, timedelta
 import random
 import minigame
@@ -5,12 +7,16 @@ import endgame
 
 class Splash:
     MINIGAMES = []
-    _duration = 0
+    _duration = 3
 
     '''Display the splash screen with some info in between minigames'''
     def __init__(self, game):
         self.game = game
         self.started_at = datetime.now()
+
+        self.gamename = game.font.render(self.game.minigame.name, 0, (255,255,255))
+        self.gamename_rect = self.gamename.get_rect()
+        self.gamename_rect.topleft = (50, 300)
 
         print 'In Splash'
         print 'Difficulty:', self.game.difficulty
@@ -23,3 +29,6 @@ class Splash:
 
         if any(p.lives <= 0 for p in self.game.players):
             self.game.state = endgame.EndGame(self.game)
+
+        self.game.screen.fill((0,0,0))
+        self.game.screen.blit(self.gamename, self.gamename_rect)
