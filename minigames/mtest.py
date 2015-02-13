@@ -9,7 +9,7 @@ class MTest(minigame.Minigame):
     def init(self):
         self.result = False
 
-    def run(self):
+    def tick(self):
         for event in pygame.event.get():
             if event.type == KEYDOWN:
                 if event.key == K_w:
@@ -17,7 +17,6 @@ class MTest(minigame.Minigame):
                 elif event.key == K_l:
                     self.result = False
 
-        self.clear_screen()
         self.print_msg("[W]in or [L]ose", (50, 50))
 
         if self.result:

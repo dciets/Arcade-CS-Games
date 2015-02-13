@@ -16,10 +16,20 @@ class Minigame:
         self.screen = screen
         self.font = font
         self.difficulty = difficulty
+        self.started_at = pygame.time.get_ticks()
 
-    def run(self, dt):
+    def run(self):
         '''Should be overriden by minigame implementation'''
-        pass
+        self.screen.fill((0,0,0))
+
+        self.tick()
+
+        elapsed_ms = pygame.time.get_ticks() - self.started_at
+        duration = self.get_duration()
+
+        sec_left = str(int(duration - elapsed_ms/1000) - 1)
+        self.print_msg(sec_left, (30, 550))
+
 
     def get_duration(self):
         '''Return minigame duration, can depend on self.difficulty'''
@@ -38,5 +48,3 @@ class Minigame:
         rect.topleft = topleft
         self.screen.blit(msg_sf, rect)
 
-    def clear_screen(self):
-        self.screen.fill((0,0,0))
