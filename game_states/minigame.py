@@ -5,7 +5,7 @@ class Minigame:
     '''Play a minigame!'''
     def __init__(self, game):
         self.game = game
-        self.minigame = self.game.minigame(self.game.difficulty, game.screen, game.font)
+        self.minigame = self.game.minigame(self.game)
         self.duration = self.minigame.get_duration()
         self.started_at = datetime.now()
 
@@ -17,11 +17,19 @@ class Minigame:
         self.minigame.run()
 
         if(self.started_at + timedelta(seconds=self.duration) < datetime.now()):
-            results = self.minigame.get_results()
-            for player, result in zip(self.game.players, results):
-                if not result:
-                    player.lives -= 1
-            self.game.state = splash.Splash(self.game)
+            self.game_done()
 
-            if all(results):
-                self.game.difficulty += 1
+    def game_done(self):
+        results = self.minigame.get_results()
+        for player, result in zip(self.game.players, results):
+            if not result:
+                player.lives -= 1
+        self.game.state = splash.Splash(self.game)
+
+        if all(results):
+            self.game.difficulty += 1
+
+        if self.game.minigame.is_singleplayer():
+            self.game.active_player = 1 - self.game.active_player
+            self.game.second_turn = not self.game.second_turn
+

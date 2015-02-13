@@ -17,12 +17,12 @@ class MTest(minigame.Minigame):
                 elif event.key == K_l:
                     self.result = False
 
-        self.print_msg("[W]in or [L]ose", (50, 50))
+        self.gfx.print_msg("[W]in or [L]ose", (50, 50))
 
         if self.result:
-            self.print_msg("Winning", (50, 100), (0, 255, 0))
+            self.gfx.print_msg("Winning", (50, 100), color=(0, 255, 0))
         else:
-            self.print_msg("Losing", (50, 100), (255, 0, 0))
+            self.gfx.print_msg("Losing", (50, 100), color=(255, 0, 0))
 
     def get_results(self):
         return [self.result, self.result]

@@ -18,6 +18,8 @@ class Game:
         self.minigame = random.choice(Game.MINIGAMES)
         self.difficulty = 0
         self.players = [player.Player(), player.Player()]
+        self.active_player = 0
+        self.second_turn = False
 
     def run(self):
         self.running = True

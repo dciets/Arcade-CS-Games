@@ -12,10 +12,17 @@ class Minigame:
     get played, starting from 0.
     '''
     max_duration = 5.0
-    def __init__(self, difficulty, screen, font):
-        self.screen = screen
-        self.font = font
-        self.difficulty = difficulty
+
+    @classmethod
+    def is_singleplayer(klass):
+        return klass.game_type == SINGLEPLAYER
+
+    def __init__(self, game):
+        self.game = game
+        self.screen = game.screen
+        self.font = game.font
+        self.gfx = game.gfx
+        self.difficulty = game.difficulty
         self.started_at = pygame.time.get_ticks()
 
     def run(self):
@@ -28,8 +35,7 @@ class Minigame:
         duration = self.get_duration()
 
         sec_left = str(int(duration - elapsed_ms/1000) - 1)
-        self.print_msg(sec_left, (30, 550))
-
+        self.gfx.print_msg(sec_left, (30, 550))
 
     def get_duration(self):
         '''Return minigame duration, can depend on self.difficulty'''
@@ -41,10 +47,4 @@ class Minigame:
         player failed while a True result means that a player succeed
         '''
         return [True, True]
-
-    def print_msg(self, msg, topleft, color = (255,255,255)):
-        msg_sf = self.font.render(msg, 0, color)
-        rect = msg_sf.get_rect()
-        rect.topleft = topleft
-        self.screen.blit(msg_sf, rect)
 
