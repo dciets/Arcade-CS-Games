@@ -4,6 +4,9 @@ from datetime import datetime, timedelta
 import random
 import minigame
 import endgame
+import gfx
+
+HEART_SPRITE = pygame.image.load('res/img/heart.png')
 
 class Splash:
     MINIGAMES = []
@@ -13,10 +16,6 @@ class Splash:
     def __init__(self, game):
         self.game = game
         self.started_at = datetime.now()
-
-        self.gamename = game.font.render(self.game.minigame.name, 0, (255,255,255))
-        self.gamename_rect = self.gamename.get_rect()
-        self.gamename_rect.topleft = (50, 300)
 
         print 'In Splash'
         print 'Difficulty:', self.game.difficulty
@@ -31,4 +30,16 @@ class Splash:
             self.game.state = endgame.EndGame(self.game)
 
         self.game.screen.fill((0,0,0))
-        self.game.screen.blit(self.gamename, self.gamename_rect)
+        self.game.gfx.print_msg("Player 1", topleft=(30, 30), color=gfx.RED)
+        self.game.gfx.print_msg("Player 2", topright=(770, 30), color=gfx.RED)
+        self.game.gfx.print_msg(self.game.minigame.name, midtop=(400, 300), color=gfx.WHITE)
+
+        heart_rect = HEART_SPRITE.get_rect()
+        heart_rect.topleft = (30, 70)
+        for i in range(self.game.players[0].lives):
+            self.game.screen.blit(HEART_SPRITE, heart_rect.move(i*(heart_rect.w+10), 0))
+
+        heart_rect.topright = (self.game.screen.get_rect().w - 30, 70)
+        for i in range(self.game.players[0].lives):
+            self.game.screen.blit(HEART_SPRITE, heart_rect.move(-i*(heart_rect.w+10), 0))
+

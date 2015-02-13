@@ -4,6 +4,7 @@ import random
 import player
 from minigames import *
 from game_states import menu
+import gfx
 
 class Game:
     MINIGAMES = [STest, MTest]
@@ -12,6 +13,7 @@ class Game:
         '''Init game state, player score, game count, etc...'''
         self.screen = screen
         self.font = font
+        self.gfx = gfx.Gfx(screen, font)
         self.state = menu.Menu(self)
         self.minigame = random.choice(Game.MINIGAMES)
         self.difficulty = 0
