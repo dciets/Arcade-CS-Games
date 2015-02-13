@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import singleplayer
+from input_map import *
 
 class STest(singleplayer.Singleplayer):
     name = "Singleplayer Test"
@@ -9,12 +10,8 @@ class STest(singleplayer.Singleplayer):
         self.result = False
 
     def tick(self):
-        for event in pygame.event.get():
-            if event.type == KEYDOWN:
-                if event.key == K_w:
-                    self.result = True
-                elif event.key == K_l:
-                    self.result = False
+        pygame.event.get()
+        self.result = self.get_player_keys()[UP]
 
         self.gfx.print_msg("[W]in or [L]ose", (50, 50))
 

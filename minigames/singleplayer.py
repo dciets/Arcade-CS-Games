@@ -1,4 +1,5 @@
 import minigame
+import input_map
 
 class Singleplayer(minigame.Minigame):
     game_type = minigame.SINGLEPLAYER
@@ -7,4 +8,8 @@ class Singleplayer(minigame.Minigame):
         results = [True, True]
         results[self.game.active_player] = self.get_result()
         return results
+
+    def get_player_keys(self):
+        print input_map.get_player_keys(self.game.active_player)
+        return input_map.get_player_keys(self.game.active_player)
 
