@@ -1,13 +1,14 @@
+import inspect
 import pygame
 import sys
 import random
 import player
-from minigames import *
+import minigames
 from game_states import menu
 import gfx
 
 class Game:
-    MINIGAMES = [STest, MTest]
+    MINIGAMES = [g for _, g in inspect.getmembers(minigames, inspect.isclass)]
 
     def __init__(self, screen, font):
         '''Init game state, player score, game count, etc...'''

@@ -3,7 +3,7 @@ from pygame.locals import *
 import singleplayer
 from input_map import *
 
-class STest(singleplayer.Singleplayer):
+class STest(singleplayer.Minigame):
     name = "Singleplayer Test"
 
     def init(self):

@@ -25,6 +25,9 @@ class Minigame:
         self.difficulty = game.difficulty
         self.started_at = pygame.time.get_ticks()
 
+    def init(self): pass
+    def tick(self): pass
+
     def run(self):
         '''Should be overriden by minigame implementation'''
         self.screen.fill((0,0,0))

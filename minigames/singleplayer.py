@@ -1,7 +1,7 @@
 import minigame
 import input_map
 
-class Singleplayer(minigame.Minigame):
+class Minigame(minigame.Minigame):
     game_type = minigame.SINGLEPLAYER
 
     def get_results(self):

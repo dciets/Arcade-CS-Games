@@ -1,11 +1,10 @@
 import pygame
 from pygame.locals import *
-import minigame
+import multiplayer
 from input_map import *
 
-class MTest(minigame.Minigame):
+class MTest(multiplayer.Minigame):
     name = "Multiplayer Test"
-    game_type = minigame.MULTIPLAYER
 
     def init(self):
         self.results = [False, False]
