@@ -11,7 +11,7 @@ class Minigame:
     self.difficulty get incremented each time this minigame
     get played, starting from 0.
     '''
-    max_duration = 5.0
+    max_duration = 5000
 
     @classmethod
     def is_singleplayer(klass):
@@ -34,12 +34,12 @@ class Minigame:
         elapsed_ms = pygame.time.get_ticks() - self.started_at
         duration = self.get_duration()
 
-        sec_left = str(int(duration - elapsed_ms/1000) - 1)
+        sec_left = str(int((duration - elapsed_ms)/1000))
         self.gfx.print_msg(sec_left, (30, 550))
 
     def get_duration(self):
         '''Return minigame duration, can depend on self.difficulty'''
-        return self.max_duration / (self.difficulty+1)
+        return self.max_duration
 
     def get_results(self):
         '''

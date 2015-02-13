@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import pygame
 import splash
 
 class Minigame:
@@ -7,7 +8,7 @@ class Minigame:
         self.game = game
         self.minigame = self.game.minigame(self.game)
         self.duration = self.minigame.get_duration()
-        self.started_at = datetime.now()
+        self.started_at = pygame.time.get_ticks()
 
         self.minigame.init()
 
@@ -16,7 +17,7 @@ class Minigame:
     def run(self):
         self.minigame.run()
 
-        if(self.started_at + timedelta(seconds=self.duration) < datetime.now()):
+        if (self.started_at + self.duration) < pygame.time.get_ticks():
             self.game_done()
 
     def game_done(self):
