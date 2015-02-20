@@ -4,6 +4,7 @@ import pygame
 from pygame.locals import *
 from input_map import *
 from minigames import multiplayer
+from minigames.mirrors.entities.bubble import Bubble
 from minigames.mirrors.entities.mirror import Mirror
 
 
@@ -15,6 +16,7 @@ class MirrorsMinigame(multiplayer.Minigame):
     MIRROR_BASE_COOLDOWN = 50
 
     def init(self):
+        self.bubble = Bubble()
         self.mirrors = []
         self.mirror_count = MirrorsMinigame.MIRROR_BASE_COUNT
         self.mirror_speed = MirrorsMinigame.MIRROR_BASE_SPEED
@@ -22,6 +24,8 @@ class MirrorsMinigame(multiplayer.Minigame):
         self.results = [False, False]
 
     def tick(self):
+        self.bubble.animate(self.screen)
+
         if self.mirror_cooldown == 0 and len(self.mirrors) < MirrorsMinigame.MIRROR_BASE_COUNT:
             self.mirror_cooldown = MirrorsMinigame.MIRROR_BASE_COOLDOWN
 
