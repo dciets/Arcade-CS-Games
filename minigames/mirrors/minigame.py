@@ -10,9 +10,9 @@ from minigames.mirrors.entities.mirror import Mirror
 class MirrorsMinigame(multiplayer.Minigame):
     name = "Break The Mirrors!"
 
-    MIRROR_BASE_COUNT = 2
+    MIRROR_BASE_COUNT = 3
     MIRROR_BASE_SPEED = 10
-    MIRROR_BASE_COOLDOWN = 100
+    MIRROR_BASE_COOLDOWN = 50
 
     def init(self):
         self.mirrors = []
@@ -22,15 +22,15 @@ class MirrorsMinigame(multiplayer.Minigame):
         self.results = [False, False]
 
     def tick(self):
-        if self.mirror_cooldown == 0:
+        if self.mirror_cooldown == 0 and len(self.mirrors) < MirrorsMinigame.MIRROR_BASE_COUNT:
             self.mirror_cooldown = MirrorsMinigame.MIRROR_BASE_COOLDOWN
 
-            self.mirrors.append(Mirror(self.screen))
+            self.mirrors.append(Mirror((self.screen.get_width(), self.screen.get_height())))
         else:
             self.mirror_cooldown -= 1
 
         for m in self.mirrors:
-            m.animate()
+            m.show(self.screen, 3, 150, 1000)
 
     def get_results(self):
         return self.results

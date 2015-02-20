@@ -11,7 +11,7 @@ class Minigame:
     self.difficulty get incremented each time this minigame
     get played, starting from 0.
     '''
-    max_duration = 5000
+    max_duration = 10000
 
     @classmethod
     def is_singleplayer(klass):
