@@ -1,6 +1,7 @@
 import minigame
 import pygame
 import input_map
+import random
 
 
 class BlackCat(minigame.Minigame):
@@ -14,12 +15,32 @@ class BlackCat(minigame.Minigame):
         {'image': pygame.image.load('./res/img/blackcat/car_blue.png'), 'width': 80, 'height': 40, 'speed': 2},
         {'image': pygame.image.load('./res/img/blackcat/truck.png'), 'width': 160, 'height': 53, 'speed': 1}
     ]
-    # Add CAR_PATTERNS [[[{}, {}], [{}, {}]], [[{}, {}], [{}, {}]], [[{}, {}], [{}, {}]], ...]
-    # Difficulty is the index, then you pick one at random.
-    # Each patterns as [{'model':car_model, 'x':x_pos_of_car, 'y':y_pos_of_car, 'side':side_of_street(0 or 1)}]
+    CAR_PATTERNS = [
+        [  # Difficulty 0
+            [{'model': TRUCK, 'lane': 0, 'x': 600}, {'model': TRUCK, 'lane': 3, 'x': 100}, {'model': TRUCK, 'lane': 1, 'x': 400}, {'model': TRUCK, 'lane': 2, 'x': 400}],
+            [{'model': CAR, 'lane': 0, 'x': 600}, {'model': CAR, 'lane': 3, 'x': 100}, {'model': CAR, 'lane': 1, 'x': 500}, {'model': CAR, 'lane': 2, 'x': 200}]
+        ],
+        [  # Difficulty 1
+            [{'model': TRUCK, 'lane': 0, 'x': 600}, {'model': TRUCK, 'lane': 3, 'x': 100}, {'model': CAR, 'lane': 1, 'x': 400}, {'model': CAR, 'lane': 2, 'x': 400}],
+            [{'model': CAR, 'lane': 0, 'x': 600}, {'model': CAR, 'lane': 3, 'x': 100}, {'model': TRUCK, 'lane': 1, 'x': 400}, {'model': TRUCK, 'lane': 2, 'x': 400}]
+        ],
+        [  # Difficulty 2
+            [{'model': TRUCK, 'lane': 0, 'x': 600}, {'model': TRUCK, 'lane': 0, 'x': 420}, {'model': TRUCK, 'lane': 3, 'x': 100}, {'model': TRUCK, 'lane': 3, 'x': 280}, {'model': CAR, 'lane': 1, 'x': 400}, {'model': CAR, 'lane': 2, 'x': 400}],
+            [{'model': TRUCK, 'lane': 0, 'x': 600}, {'model': CAR, 'lane': 1, 'x': 500}, {'model': TRUCK, 'lane': 3, 'x': 100}, {'model': CAR, 'lane': 2, 'x': 280}, {'model': CAR, 'lane': 1, 'x': 400}, {'model': CAR, 'lane': 2, 'x': 400}]
+        ],
+        [
+            [{'model': TRUCK, 'lane': 0, 'x': 600}, {'model': TRUCK, 'lane': 0, 'x': 420}, {'model': TRUCK, 'lane': 3, 'x': 100}, {'model': TRUCK, 'lane': 3, 'x': 280}, {'model': CAR, 'lane': 1, 'x': 400}, {'model': CAR, 'lane': 2, 'x': 400}, {'model': CAR, 'lane': 1, 'x': 500}, {'model': CAR, 'lane': 2, 'x': 280}],
+            [{'model': CAR, 'lane': 0, 'x': 600}, {'model': CAR, 'lane': 0, 'x': 500}, {'model': CAR, 'lane': 3, 'x': 100}, {'model': CAR, 'lane': 3, 'x': 200}, {'model': CAR, 'lane': 1, 'x': 400}, {'model': CAR, 'lane': 2, 'x': 400}, {'model': CAR, 'lane': 1, 'x': 500}, {'model': CAR, 'lane': 2, 'x': 280}]
+        ],
+        [
+            [{'model': TRUCK, 'lane': 0, 'x': 600}, {'model': TRUCK, 'lane': 0, 'x': 420}, {'model': TRUCK, 'lane': 0, 'x': 240}, {'model': TRUCK, 'lane': 3, 'x': 100}, {'model': TRUCK, 'lane': 3, 'x': 280}, {'model': TRUCK, 'lane': 3, 'x': 460}, {'model': CAR, 'lane': 1, 'x': 600}, {'model': CAR, 'lane': 1, 'x': 700}, {'model': CAR, 'lane': 2, 'x': 100}, {'model': CAR, 'lane': 2, 'x': 200}],
+            [{'model': TRUCK, 'lane': 0, 'x': 600}, {'model': TRUCK, 'lane': 0, 'x': 200}, {'model': TRUCK, 'lane': 3, 'x': 100}, {'model': TRUCK, 'lane': 3, 'x': 500}, {'model': CAR, 'lane': 1, 'x': 600}, {'model': CAR, 'lane': 1, 'x': 400}, {'model': CAR, 'lane': 2, 'x': 100}, {'model': CAR, 'lane': 2, 'x': 300}]
+        ]
+    ]
 
     def __init__(self, game):
         minigame.Minigame.__init__(self, game)
+        if self.difficulty > 4: self.difficulty = 4
         self.width, self.height = self.screen.get_size()
         # Street stuff
         self.street_height = 400
@@ -44,20 +65,17 @@ class BlackCat(minigame.Minigame):
 
         # Car stuff
         self.cars = []
-        for i in range(4):
-            y = 125 + i*100
-            for j in range(self.difficulty+1):
-                if i == 0 or i == 3:
-                    model = BlackCat.TRUCK
-                else:
-                    model = BlackCat.CAR
-                image = BlackCat.CAR_MODELS[model]['image'] if int(i/2) else pygame.transform.flip(BlackCat.CAR_MODELS[model]['image'], True, False)
-                self.cars.append({
-                    'image': image,
-                    'rect': pygame.Rect(j*self.width/4 + i * self.width/16, y, BlackCat.CAR_MODELS[model]['width'], BlackCat.CAR_MODELS[model]['height']),
-                    'side': int(i/2),
-                    'speed': BlackCat.CAR_MODELS[model]['speed']
-                })
+        pattern_pool = BlackCat.CAR_PATTERNS[self.difficulty]
+        pattern = random.choice(pattern_pool)
+        for car in pattern:
+            car_model = BlackCat.CAR_MODELS[car['model']]
+            image = car_model['image'] if int(car['lane']/2) else pygame.transform.flip(car_model['image'], True, False)
+            self.cars.append({
+                'image': image,
+                'rect': pygame.Rect(car['x'] - car_model['width']/2, 125 + car['lane']*100, car_model['width'], car_model['height']),
+                'lane': car['lane'],
+                'speed': car_model['speed']
+            })
 
     def tick(self):
         self.update()
@@ -97,7 +115,7 @@ class BlackCat(minigame.Minigame):
                             self.cats[i][1] += self.row_height
 
         for car in self.cars:
-            if car['side'] == 0:
+            if car['lane'] < 2:
                 car['rect'].x -= car['speed']
                 if car['rect'].x + car['rect'].width < 0:
                     car['rect'].x = self.width
