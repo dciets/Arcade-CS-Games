@@ -27,7 +27,7 @@ class Minigame:
                 player.lives -= 1
         self.game.state = splash.Splash(self.game)
 
-        if all(results):
+        if any(results):
             self.game.difficulty += 1
 
         if self.game.minigame.is_singleplayer():
