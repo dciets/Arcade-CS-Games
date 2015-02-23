@@ -39,8 +39,8 @@ class Splash:
         self.game.gfx.print_msg(self.game.minigame.name, midtop=(self.scrrct.centerx, 300), color=gfx.WHITE)
 
         # Display players lives
-        self.game.gfx.print_msg("Player 1", topleft=(30, 30), color=gfx.RED)
-        self.game.gfx.print_msg("Player 2", topright=(self.scrrct.w-30, 30), color=gfx.RED)
+        self.game.gfx.print_msg(self.game.players[0].university, topleft=(30, 30), color=gfx.RED)
+        self.game.gfx.print_msg(self.game.players[1].university, topright=(self.scrrct.w-30, 30), color=gfx.BLUE)
 
         heart_rect = HEART_SPRITE.get_rect()
         heart_rect.topleft = (30, 70)
@@ -53,4 +53,4 @@ class Splash:
 
         # Display who's playing next for single player minigame
         if self.game.minigame.is_singleplayer():
-            self.game.gfx.print_msg("Player {}".format(self.game.active_player+1), midtop=(self.scrrct.centerx, self.scrrct.h - 100), color=gfx.BLUE)
+            self.game.gfx.print_msg("Player {}".format(self.game.active_player+1), midtop=(self.scrrct.centerx, self.scrrct.h - 100), color=gfx.RED if self.game.active_player == 0 else gfx.BLUE)
