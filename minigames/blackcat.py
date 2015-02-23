@@ -6,7 +6,7 @@ import random
 
 class BlackCat(minigame.Minigame):
     game_type = minigame.MULTIPLAYER
-    name = 'Get on the other side!'
+    name = 'Get to the other side!'
     cat_images = [pygame.image.load('./res/img/blackcat/cat_1.png'), pygame.image.load('./res/img/blackcat/cat_2.png')]
     blood_image = pygame.image.load('./res/img/blackcat/blood.png')
     CAR = 0

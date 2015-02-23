@@ -53,4 +53,4 @@ class Splash:
 
         # Display who's playing next for single player minigame
         if self.game.minigame.is_singleplayer():
-            self.game.gfx.print_msg("Player {}".format(self.game.active_player+1), midtop=(self.scrrct.centerx, self.scrrct.h - 100), color=gfx.RED if self.game.active_player == 0 else gfx.BLUE)
+            self.game.gfx.print_msg(self.game.players[self.game.active_player].university, midtop=(self.scrrct.centerx, self.scrrct.h - 100), color=gfx.RED if self.game.active_player == 0 else gfx.BLUE)
