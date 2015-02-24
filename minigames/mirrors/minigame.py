@@ -5,7 +5,7 @@ from pygame.locals import *
 from input_map import *
 from minigames import multiplayer
 from minigames.mirrors.entities.blaster import Blaster
-from minigames.mirrors.entities.bubble import Bubble
+from minigames.mirrors.entities.blaster_base import BlasterBase
 from minigames.mirrors.entities.mirror import Mirror
 
 
@@ -17,8 +17,7 @@ class MirrorsMinigame(multiplayer.Minigame):
     MIRROR_BASE_COOLDOWN = 50
 
     def init(self):
-        self.bubble = Bubble()
-        self.blasters = [Blaster(0)]
+        self.base = BlasterBase(1)
         self.mirrors = []
         self.mirror_count = MirrorsMinigame.MIRROR_BASE_COUNT
         self.mirror_speed = MirrorsMinigame.MIRROR_BASE_SPEED
@@ -26,9 +25,25 @@ class MirrorsMinigame(multiplayer.Minigame):
         self.results = [False, False]
 
     def tick(self):
-        self.bubble.display(self.screen)
-        self.blasters[0].display(self.screen)
-        self.blasters[0].angle = (pygame.time.get_ticks() / 5) % 360
+        keys = pygame.key.get_pressed()
+
+        for event in pygame.event.get():
+            if event.type == KEYDOWN:
+                for i in range(len(self.base.blasters)):
+                    if event.key == PLAYERS_MAPPING[i][UP]:
+                        self.base.blasters[i].set_status(Blaster.START)
+                        self.base.blasters[i].set_direction(Blaster.RIGHT)
+                    elif event.key == PLAYERS_MAPPING[i][DOWN]:
+                        self.base.blasters[i].set_status(Blaster.STOP)
+                        self.base.blasters[i].set_direction(Blaster.RIGHT)
+            elif event.type == KEYUP:
+                for i in range(len(self.base.blasters)):
+                    if event.key == PLAYERS_MAPPING[i][UP]:
+                        self.base.blasters[i].set_status(Blaster.START)
+                        self.base.blasters[i].set_direction(Blaster.LEFT)
+                    elif event.key == PLAYERS_MAPPING[i][DOWN]:
+                        self.base.blasters[i].set_status(Blaster.STOP)
+                        self.base.blasters[i].set_direction(Blaster.LEFT)
 
         if self.mirror_cooldown == 0 and len(self.mirrors) < MirrorsMinigame.MIRROR_BASE_COUNT:
             self.mirror_cooldown = MirrorsMinigame.MIRROR_BASE_COOLDOWN
@@ -36,6 +51,8 @@ class MirrorsMinigame(multiplayer.Minigame):
             self.mirrors.append(Mirror((self.screen.get_width(), self.screen.get_height()), self.mirrors))
         else:
             self.mirror_cooldown -= 1
+
+        self.base.display(self.screen)
 
         for m in self.mirrors:
             m.display(self.screen, 3, 150, 1000)
