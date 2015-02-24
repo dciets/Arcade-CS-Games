@@ -6,9 +6,14 @@ import pygame
 
 class Blaster:
     SCALE = 3
-    ACCELERATION = 0
-    STOP = 0
-    START = 1
+    MAX_SPEED = 2
+    ACCELERATION = 0.005
+    DECELERATION = -0.005
+
+    STOPPED = 0
+    STOPPING = 1
+    MOVING = 2
+
     LEFT = -1
     RIGHT = 1
     RADIUS = 70
@@ -27,14 +32,12 @@ class Blaster:
         self.blaster_gfx = []
         self.los_gfx = []
         self.frame = 0
-        self.shooting = False
 
-        self._v0 = 0
-        self._theta0 = random.randint(0, 359)
         self._t0 = -1
+        self._v0 = 0
         self._v = 0
-        self._theta = 0
-        self._status = Blaster.STOP
+        self._status = Blaster.STOPPED
+        self._angle = 0
         self._direction = Blaster.RIGHT
 
         for path in Blaster.BLASTER_SPRITES[player]:
@@ -51,46 +54,43 @@ class Blaster:
 
     def set_direction(self, direction):
         self._direction = direction
+        self._v0 = self._v
 
     def set_status(self, status):
-        # if status != self._status:
-        #     if self._t0 == -1:
-        #         self._v0 = 0
-        #     else:
-        #         self._v0 = self._theta / (pygame.time.get_ticks() - self._t0)
-        #
-        #     self._theta0 = self._theta
-        #     self._theta = 0
-        #     self._t0 = -1
+        if self._status != status:
+            self._v0 = self._v
+            self._t0 = pygame.time.get_ticks()
 
         self._status = status
 
     def display(self, screen):
-        # if self._status == Blaster.START:
-        #     if self._t0 == -1:
-        #         self._t0 = pygame.time.get_ticks()
-        #         _t = 0
-        #     else:
-        #         _t = pygame.time.get_ticks() - self._t0
-        #
-        #     self._theta = self._theta0 + 0.1 * (self._v0 * _t + (Blaster.ACCELERATION * _t ** 2) / 2 * self._direction)
-        # elif self._status == Blaster.STOP:
-        #     if self._t0 == -1:
-        #         self._t0 = pygame.time.get_ticks()
-        #         _t = 0
-        #     else:
-        #         _t = pygame.time.get_ticks() - self._t0
-        #
-        #     self._theta = self._theta0 - 0.1 * (self._v0 * _t + (-Blaster.ACCELERATION * _t ** 2) / 2 * self._direction)
-        #
-        # print self._theta
+        if self._status == Blaster.MOVING:
+            if self._direction == -1:
+                self._v = max(self._v0 - Blaster.ACCELERATION * ((pygame.time.get_ticks() - self._t0)), -Blaster.MAX_SPEED)
+                print "RIGHT"
+                print self._v
+            elif self._direction == 1:
+                self._v = min(self._v0 + Blaster.ACCELERATION * ((pygame.time.get_ticks() - self._t0)), Blaster.MAX_SPEED)
+                print "LEFT"
+                print self._v
+        elif self._status == Blaster.STOPPING and self._t0 != -1:
+            if self._direction == -1:
+                self._v = min(self._v0 - Blaster.DECELERATION * ((pygame.time.get_ticks() - self._t0)), 0)
+            elif self._direction == 1:
+                self._v = max(self._v0 + Blaster.DECELERATION * ((pygame.time.get_ticks() - self._t0)), 0)
+
+            if self._v == 0:
+                self._status = Blaster.STOPPED
+
+        #print self._v
+        self._angle += self._v
 
         sx = screen.get_width() / 2
         sy = screen.get_height() / 2
-        dy = sin(radians(self._theta)) * Blaster.RADIUS
-        dx = cos(radians(self._theta)) * Blaster.RADIUS
+        dy = sin(radians(self._angle)) * Blaster.RADIUS
+        dx = cos(radians(self._angle)) * Blaster.RADIUS
 
-        rotated_gfx = pygame.transform.rotate(self.blaster_gfx[self.frame], 270 - self._theta)
+        rotated_gfx = pygame.transform.rotate(self.blaster_gfx[self.frame], 270 - self._angle)
         rect = rotated_gfx.get_rect(center=(sx + dx, sy + dy))
 
         screen.blit(rotated_gfx, rect)

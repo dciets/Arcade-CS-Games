@@ -31,18 +31,18 @@ class MirrorsMinigame(multiplayer.Minigame):
             if event.type == KEYDOWN:
                 for i in range(len(self.base.blasters)):
                     if event.key == PLAYERS_MAPPING[i][UP]:
-                        self.base.blasters[i].set_status(Blaster.START)
+                        self.base.blasters[i].set_status(Blaster.MOVING)
                         self.base.blasters[i].set_direction(Blaster.RIGHT)
                     elif event.key == PLAYERS_MAPPING[i][DOWN]:
-                        self.base.blasters[i].set_status(Blaster.STOP)
-                        self.base.blasters[i].set_direction(Blaster.RIGHT)
+                        self.base.blasters[i].set_status(Blaster.MOVING)
+                        self.base.blasters[i].set_direction(Blaster.LEFT)
             elif event.type == KEYUP:
                 for i in range(len(self.base.blasters)):
                     if event.key == PLAYERS_MAPPING[i][UP]:
-                        self.base.blasters[i].set_status(Blaster.START)
-                        self.base.blasters[i].set_direction(Blaster.LEFT)
+                        self.base.blasters[i].set_status(Blaster.STOPPING)
+                        self.base.blasters[i].set_direction(Blaster.RIGHT)
                     elif event.key == PLAYERS_MAPPING[i][DOWN]:
-                        self.base.blasters[i].set_status(Blaster.STOP)
+                        self.base.blasters[i].set_status(Blaster.STOPPING)
                         self.base.blasters[i].set_direction(Blaster.LEFT)
 
         if self.mirror_cooldown == 0 and len(self.mirrors) < MirrorsMinigame.MIRROR_BASE_COUNT:
