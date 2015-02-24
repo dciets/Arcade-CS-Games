@@ -1,26 +1,22 @@
-import operator
+from itertools import cycle
 import pygame
 
 
 class Bubble:
-    SCALE = 4
+    SCALE = 3
 
     def __init__(self):
-        sprite1 = pygame.image.load("minigames/mirrors/images/bubble1.png")
-        sprite1 = pygame.transform.scale(sprite1, map(operator.mul, sprite1.get_size(), len(sprite1.get_size()) * (Bubble.SCALE,)))
-        sprite2 = pygame.image.load("minigames/mirrors/images/bubble2.png")
-        sprite2 = pygame.transform.scale(sprite2, map(operator.mul, sprite2.get_size(), len(sprite2.get_size()) * (Bubble.SCALE,)))
+        self.sprites = [pygame.image.load("minigames/mirrors/images/bubble1.png"),
+                        pygame.image.load("minigames/mirrors/images/bubble2.png")]
 
-        self.frame = 1
-        self.state = 0
-        self.sprites = [sprite1, sprite2]
+        self.sprites[0] = pygame.transform.scale(self.sprites[0], (self.sprites[0].get_width() * Bubble.SCALE, self.sprites[0].get_height() * Bubble.SCALE))
+        self.sprites[1] = pygame.transform.scale(self.sprites[1], (self.sprites[1].get_width() * Bubble.SCALE, self.sprites[1].get_height() * Bubble.SCALE))
 
-    def animate(self, screen):
-        if self.frame % 500 == 0:
-            self.state = 0
-            self.frame = 1
-        elif self.frame % 250 == 0:
-            self.state = 1
+        self.sprites = cycle(self.sprites)
+        self.gfx = self.sprites.next()
 
-        screen.blit(self.sprites[self.state], ((screen.get_width() / 2) - (self.sprites[self.state].get_width() / 2), (screen.get_height() / 2) - (self.sprites[self.state].get_height() / 2)))
-        self.frame += 1
+    def display(self, screen):
+        if pygame.time.get_ticks() % 250 == 0:
+            self.gfx = self.sprites.next()
+
+        screen.blit(self.gfx, ((screen.get_width() / 2) - (self.gfx.get_width() / 2), (screen.get_height() / 2) - (self.gfx.get_height() / 2)))
