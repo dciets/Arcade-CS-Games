@@ -36,6 +36,8 @@ class MirrorsMinigame(multiplayer.Minigame):
                     elif event.key == PLAYERS_MAPPING[i][DOWN]:
                         self.base.blasters[i].set_status(Blaster.MOVING)
                         self.base.blasters[i].set_direction(Blaster.LEFT)
+                    elif event.key == PLAYERS_MAPPING[i][ACTION]:
+                        self.base.blasters[i].shoot()
             elif event.type == KEYUP:
                 for i in range(len(self.base.blasters)):
                     if event.key == PLAYERS_MAPPING[i][UP]:
