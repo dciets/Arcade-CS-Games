@@ -26,7 +26,7 @@ class Game:
         self.running = True
         while self.running:
             if pygame.key.get_pressed()[pygame.K_ESCAPE]:
-                sys.exit();
+                sys.exit()
             self.state.run()
             pygame.display.update()
 
