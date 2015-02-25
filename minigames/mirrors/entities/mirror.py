@@ -60,7 +60,14 @@ class Mirror:
 
         return random.choice(positions)
 
-    def display(self, screen, speed, animation_duration, show_duration):
+    def destroy(self):
+        pass
+
+    def display(self, screen, speed, animation_duration, show_duration, bullets):
+        for b in bullets:
+            if b.collides_with(self):
+                return b.owner
+
         if self.frame <= animation_duration:
             if not self.hiding:
                 self.position = (self.smooth_step(self.x1, self.x2, animation_duration - self.frame, animation_duration, speed), self.smooth_step(self.y1, self.y2, animation_duration - self.frame, animation_duration, speed))
@@ -74,6 +81,8 @@ class Mirror:
 
         self.frame += 1.0
         screen.blit(self.gfx, self.position)
+
+        return None
 
     def smooth_step(self, p1, p2, t, d, a):
         if p1 == p2:

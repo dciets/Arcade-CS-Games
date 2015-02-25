@@ -14,6 +14,15 @@ class BlasterBase:
         for player in range(0, num_players):
             self.blasters.append(Blaster(player))
 
+    def get_bullets(self):
+        bullets = []
+
+        for blaster in self.blasters:
+            for bullet in blaster.bullets:
+                bullets.append(bullet)
+
+        return bullets
+
     def display(self, screen):
         b = self.blasters[:]
         random.shuffle(b)

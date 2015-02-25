@@ -11,16 +11,20 @@ class Bullet:
         self.gfx = pygame.image.load(Bullet.BULLET_SPRITES[player])
         self.gfx = pygame.transform.scale(self.gfx, (self.gfx.get_width() * Bullet.SCALE, self.gfx.get_height() * Bullet.SCALE))
         self.gfx = pygame.transform.rotate(self.gfx, angle)
+        self.owner = player
 
         self._d = 0
-        self._x0 = initial_x
-        self._y0 = initial_y
+        self._x = initial_x
+        self._y = initial_y
         self._a = angle
         self._v = power * Bullet.BASE_SPEED
 
-    def display(self, screen):
-        self._d += self._v
-        dx = self._d * sin(self._a)
-        dy = self._d * cos(self._a)
+    def collides_with(self, mirror):
+        return self.gfx.get_rect(center=(self._x, self._y)).colliderect(mirror.gfx.get_rect(topleft=mirror.position))
 
-        screen.blit(self.gfx, (self._x0 + dx, self._y0 + dy))
+    def display(self, screen):
+        self._x -= self._v * sin(radians(self._a))
+        self._y -= self._v * cos(radians(self._a))
+        rect = self.gfx.get_rect(center=(self._x, self._y))
+
+        screen.blit(self.gfx, rect)
