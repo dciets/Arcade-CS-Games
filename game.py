@@ -8,8 +8,7 @@ from game_states import menu
 import gfx
 
 class Game:
-    #MINIGAMES = [g for _, g in inspect.getmembers(minigames, inspect.isclass)]
-    MINIGAMES = [minigames.SpinGame]
+    MINIGAMES = [g for _, g in inspect.getmembers(minigames, inspect.isclass)]
 
     def __init__(self, screen, font):
         '''Init game state, player score, game count, etc...'''
