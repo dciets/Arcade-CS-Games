@@ -9,7 +9,7 @@ ACTION = 4
 
 PLAYERS_MAPPING = [
     [K_w, K_d, K_s, K_a, K_SPACE], # UP, RIGHT,  DOWN, LEFT, ACTION
-    [K_UP, K_RIGHT, K_DOWN, K_LEFT, K_KP0], # UP, RIGHT,  DOWN, LEFT, ACTION
+    [K_UP, K_RIGHT, K_DOWN, K_LEFT, K_0], # UP, RIGHT,  DOWN, LEFT, ACTION
 ]
 
 def get_player_keys(player):

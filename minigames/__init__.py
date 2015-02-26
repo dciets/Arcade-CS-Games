@@ -1,5 +1,5 @@
 # from stest import STest
 # from mtest import MTest
-# from blackcat import BlackCat
-# from spingame import SpinGame
+from blackcat import BlackCat
+from spingame import SpinGame
 from mirrors.minigame import MirrorsMinigame

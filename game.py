@@ -16,7 +16,7 @@ class Game:
         self.font = font
         self.gfx = gfx.Gfx(screen, font)
         self.state = menu.Menu(self)
-        self.minigame = random.choice(Game.MINIGAMES)
+        self.choose_minigame()
         self.difficulty = 0
         self.players = [player.Player(), player.Player()]
         self.active_player = 0
@@ -25,9 +25,14 @@ class Game:
     def run(self):
         self.running = True
         while self.running:
+            if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+                sys.exit()
             self.state.run()
             pygame.display.update()
 
     def stop(self):
         self.running = False
+
+    def choose_minigame(self):
+        self.minigame = random.choice(Game.MINIGAMES)
 
