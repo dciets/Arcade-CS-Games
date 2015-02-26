@@ -151,10 +151,13 @@ class Blaster:
         rotated_los = pygame.transform.rotate(self.los_gfx, 270 - self._angle)
 
         blaster_rect = rotated_blaster.get_rect(center=(sx + dx, sy + dy))
-        los_rect = rotated_los.get_rect(center=(sx + dx * 2, sy + dy * 2))
+        los_rect = rotated_los.get_rect(center=(sx + dx, sy + dy))
 
-        for b in self.bullets:
-            b.display(screen)
+        for i, b in enumerate(self.bullets):
+            if not b.is_visible(screen):
+                del self.bullets[i]
+            else:
+                b.display(screen)
 
         screen.blit(rotated_los, los_rect)
         screen.blit(rotated_blaster, blaster_rect)

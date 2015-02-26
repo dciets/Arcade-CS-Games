@@ -5,12 +5,18 @@ import random
 
 class Mirror:
     SCALE = 3
+    ANIMATION_DURATION = 150
+    BASE_SPEED = 3
     IMAGES = [os.path.join("minigames/mirrors/images", f) for f in os.listdir("minigames/mirrors/images") if f.startswith("mirror") and os.path.isfile(os.path.join("minigames/mirrors/images", f))]
     ANGLES = [180, 270, 0, 90]
 
-    def __init__(self, screen_size, mirrors):
+    def __init__(self, screen_size, show_duration, mirrors):
+        self.speed = Mirror.BASE_SPEED
+        self.show_duration = show_duration
         self.frame = 0.0
         self.hiding = False
+        self.destroyed = False
+        self.blink_count = 0
         self.angle = random.choice(Mirror.ANGLES)
         self.position = (0, 0)
         self.gfx = pygame.image.load(random.choice(Mirror.IMAGES))
@@ -19,6 +25,8 @@ class Mirror:
 
         screen_width, screen_height = screen_size
         mirrors = filter(lambda m: m.angle == self.angle, mirrors)
+
+        self._initial_position = None
 
         # Pop from Top
         if self.angle == 180:
@@ -52,43 +60,55 @@ class Mirror:
     def random_position(self, min, max, excluded_ranges):
         positions = range(min, max)
 
-        for p in positions:
+        for i, p in enumerate(positions):
             for er in excluded_ranges:
                 if p in er:
-                    positions.remove(p)
+                    del positions[i]
                     break
 
         return random.choice(positions)
 
+    def is_visible(self):
+        x, y = self.position
+
+        return not (self.hiding and self.position == self._initial_position)
+
     def destroy(self):
-        pass
+        self.destroyed = True
 
-    def display(self, screen, speed, animation_duration, show_duration, bullets):
-        for b in bullets:
-            if b.collides_with(self):
-                return b.owner
+    def display(self, screen):
+        if self.destroyed:
+            if self.frame % 25 == 0:
+                self.blink_count += 1
 
-        if self.frame <= animation_duration:
-            if not self.hiding:
-                self.position = (self.smooth_step(self.x1, self.x2, animation_duration - self.frame, animation_duration, speed), self.smooth_step(self.y1, self.y2, animation_duration - self.frame, animation_duration, speed))
-            else:
-                self.position = (self.smooth_step(self.x1, self.x2, self.frame, animation_duration, speed), self.smooth_step(self.y1, self.y2, self.frame, animation_duration, speed))
+            # Blink 6 times, then reset to original position (to hide and delete the mirror)
+            if self.blink_count == 6:
+                self.position = self._initial_position
+        else:
+            if self.frame <= Mirror.ANIMATION_DURATION:
+                if not self.hiding:
+                    self.position = (self.smooth_step(self.x1, self.x2, Mirror.ANIMATION_DURATION - self.frame, Mirror.ANIMATION_DURATION), self.smooth_step(self.y1, self.y2, Mirror.ANIMATION_DURATION - self.frame, Mirror.ANIMATION_DURATION))
+                else:
+                    self.position = (self.smooth_step(self.x1, self.x2, self.frame, Mirror.ANIMATION_DURATION), self.smooth_step(self.y1, self.y2, self.frame, Mirror.ANIMATION_DURATION))
 
-        elif self.frame == animation_duration + show_duration and not self.hiding:
-            self.hiding = True
-            self.frame = 0.0
-            speed *= 10
+            if self._initial_position == None:
+                self._initial_position = self.position
+
+            elif self.frame == Mirror.ANIMATION_DURATION + self.show_duration and not self.hiding:
+                self.hiding = True
+                self.frame = 0.0
+                self.speed *= 10
 
         self.frame += 1.0
-        screen.blit(self.gfx, self.position)
 
-        return None
+        if self.blink_count % 2 == 0:
+            screen.blit(self.gfx, self.position)
 
-    def smooth_step(self, p1, p2, t, d, a):
+    def smooth_step(self, p1, p2, t, d):
         if p1 == p2:
             return p1
 
         x = t / d
-        x = a * (x * x * (3 - 2 * x))
+        x = self.speed * (x * x * (3 - 2 * x))
 
         return (p1 * x) + (p2 * (1 - x))

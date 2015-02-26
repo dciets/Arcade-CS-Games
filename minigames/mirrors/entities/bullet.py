@@ -19,8 +19,11 @@ class Bullet:
         self._a = angle
         self._v = power * Bullet.BASE_SPEED
 
+    def is_visible(self, screen):
+        return 0 <= self._x <= screen.get_width() and 0 <= self._y <= screen.get_height()
+
     def collides_with(self, mirror):
-        return self.gfx.get_rect(center=(self._x, self._y)).colliderect(mirror.gfx.get_rect(topleft=mirror.position))
+        return self.gfx.get_rect(center=(self._x, self._y)).colliderect(mirror.gfx.get_rect(topleft=mirror.position)) and not mirror.destroyed
 
     def display(self, screen):
         self._x -= self._v * sin(radians(self._a))

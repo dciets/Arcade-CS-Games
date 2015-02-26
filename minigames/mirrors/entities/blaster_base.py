@@ -14,14 +14,18 @@ class BlasterBase:
         for player in range(0, num_players):
             self.blasters.append(Blaster(player))
 
-    def get_bullets(self):
-        bullets = []
+    def get_points(self, mirrors):
+        # If two bullets collide with a single mirror,
+        # check for collisions with a shuffled list of
+        # blasters (to try and make it fairer...)
+        blasters = sorted(self.blasters, key=lambda *args: random.random())
 
-        for blaster in self.blasters:
+        for blaster in blasters:
             for bullet in blaster.bullets:
-                bullets.append(bullet)
-
-        return bullets
+                for mirror in mirrors:
+                    if bullet.collides_with(mirror):
+                        mirror.destroy()
+                        yield blaster.player
 
     def display(self, screen):
         b = self.blasters[:]
