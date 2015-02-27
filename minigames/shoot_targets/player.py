@@ -18,8 +18,8 @@ class Player:
     def __init__(self, parent, player_num):
         self.parent = parent
         self.image = Player.player_images[player_num]
-        self.position = [0, 0]
-        self.target_position = [0, 0]
+        self.position = [parent.screen_rect.width * (player_num * 0.8 + 0.1), parent.screen_rect.height / 2]
+        self.target_position = self.position[:]
         self.points = 0
         self.direction = [0, 0]
         self.hitbox_radius = 30
@@ -30,8 +30,16 @@ class Player:
         return (self.hitbox_radius - radius) ** 2 <= d <= (self.hitbox_radius + radius) ** 2
 
     def update(self):
+        max = self.parent.screen_rect.size
         for i in range(2):
             self.target_position[i] += self.direction[i] * Player.speed
+
+            if self.target_position[i] < 0:
+                self.target_position[i] = 0
+
+            if self.target_position[i] > max[i]:
+                self.target_position[i] = max[i]
+
             self.position[i] += (self.target_position[i] - self.position[i]) / Player.damp
 
         if self.flare:
