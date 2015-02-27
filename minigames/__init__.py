@@ -3,3 +3,4 @@
 from blackcat import BlackCat
 from spingame import SpinGame
 from mirrors.minigame import MirrorsMinigame
+from leprechaunBeatemUp.leprechaunBeatemUp import LeprechaunBeatemUp
