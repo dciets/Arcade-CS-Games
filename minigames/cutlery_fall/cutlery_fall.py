@@ -1,15 +1,17 @@
 from minigames import multiplayer
 from Player import Player
 from Cutlery import Cutlery
+from people import People
 import pygame
 import input_map
-import random
+import math
 
 class CutleryFall(multiplayer.Minigame):
     name = 'Press the right key!'
     max_duration = 10000
 
     def init(self):
+        self.PEOPLE_DISTANCE = 100
         self.SPAWN_TIME = 1.0
         self.WAIT_TIME = 10
         self.DRAW_SPEED = 30
@@ -17,10 +19,10 @@ class CutleryFall(multiplayer.Minigame):
         self.drawTime = pygame.time.get_ticks()/1000.0
 
         self.background = pygame.image.load("./res/img/cutleryFall/Background.png").convert()
-        self.cutlery = pygame.image.load("./res/img/cutleryFall/knife.png").convert_alpha()
 
         self.players = [Player(), Player()]
         self.cutleries = []
+        self.visits = []
 
     def run(self):
         self.tick()
@@ -43,11 +45,17 @@ class CutleryFall(multiplayer.Minigame):
 
     def update(self):
         for cutlery in self.cutleries:
-            if cutlery.remove():
+            if cutlery.destroy:
                 self.cutleries.remove(cutlery)
 
         for cutlery in self.cutleries:
             cutlery.update()
+            if not cutlery.active and cutlery.visit:
+                pos = self.PEOPLE_DISTANCE * math.ceil(len(self.visits) / 2)
+                if len(self.visits) % 2 == 0:
+                    pos = -pos
+                self.visits.append(People(cutlery.cutleryType, pos))
+                cutlery.visit = False
 
         timeElapsed = pygame.time.get_ticks()/1000.0 - self.currentTime
         if timeElapsed >= self.SPAWN_TIME:
@@ -57,12 +65,12 @@ class CutleryFall(multiplayer.Minigame):
     def draw(self):
         # Draw screen
         self.screen.blit(self.background, [0, 0])
+        for visit in self.visits:
+            visit.draw(self.screen)
         for cutlery in self.cutleries:
             cutlery.draw(self.screen)
 
         # Draw info
-        self.screen.blit(self.cutlery, (60,25))
-        self.screen.blit(self.cutlery, (710,25))
         self.gfx.print_msg(str(self.players[0].score), (30, 30))
         self.gfx.print_msg(str(self.players[1].score), (750, 30))
 
