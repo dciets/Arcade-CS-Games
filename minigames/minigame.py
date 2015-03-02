@@ -19,6 +19,9 @@ class Minigame:
 
     def __init__(self, game):
         self.game = game
+        self.fps = game.FPS
+        self.elapsed_ms = 0
+        self.frame = 0
         self.screen = game.screen
         self.font = game.font
         self.gfx = game.gfx
@@ -30,14 +33,11 @@ class Minigame:
 
     def run(self):
         '''Should be overriden by minigame implementation'''
+        self.elapsed_ms = self.game.state.elapsed_ms
         self.screen.fill((0,0,0))
-
         self.tick()
-
-        elapsed_ms = pygame.time.get_ticks() - self.started_at
-        duration = self.get_duration()
-
-        sec_left = str(int((duration - elapsed_ms)/1000))
+        self.frame += 1
+        sec_left = str(int((self.get_duration() - self.elapsed_ms)/1000))
         self.gfx.print_msg(sec_left, (30, 550))
 
     def get_duration(self):

@@ -7,7 +7,9 @@ class Bullet:
     BASE_SPEED = 0.6
     BULLET_SPRITES = [ "minigames/mirrors/images/bullet1.png",
                        "minigames/mirrors/images/bullet2.png" ]
-    def __init__(self, player, initial_x, initial_y, angle, power):
+    def __init__(self, game, player, initial_x, initial_y, angle, power):
+        self.game = game
+        
         self.gfx = pygame.image.load(Bullet.BULLET_SPRITES[player])
         self.gfx = pygame.transform.scale(self.gfx, (self.gfx.get_width() * Bullet.SCALE, self.gfx.get_height() * Bullet.SCALE))
         self.gfx = pygame.transform.rotate(self.gfx, angle)

@@ -46,7 +46,9 @@ class Blaster:
                     ["minigames/mirrors/images/los2_1.png",
                      "minigames/mirrors/images/los2_2.png"] ]
 
-    def __init__(self, player):
+    def __init__(self, game, player):
+        self.game = game
+
         self._frame = 0
         self._t0 = -1
         self._v0 = 0
@@ -61,23 +63,23 @@ class Blaster:
 
         # GFX
         self._blaster = [
-            cycle([ pygame.image.load(Blaster.BLASTER_SPRITES[player][0]),
-                    pygame.image.load(Blaster.BLASTER_SPRITES[player][1]),
-                    pygame.image.load(Blaster.BLASTER_SPRITES[player][2]),
-                    pygame.image.load(Blaster.BLASTER_SPRITES[player][1]) ]),
-            cycle([ pygame.image.load(Blaster.BLASTER_SPRITES[player][2]),
-                    pygame.image.load(Blaster.BLASTER_SPRITES[player][3]) ])
+            cycle([ pygame.image.load(Blaster.BLASTER_SPRITES[player][0]).convert_alpha(),
+                    pygame.image.load(Blaster.BLASTER_SPRITES[player][1]).convert_alpha(),
+                    pygame.image.load(Blaster.BLASTER_SPRITES[player][2]).convert_alpha(),
+                    pygame.image.load(Blaster.BLASTER_SPRITES[player][1]).convert_alpha() ]),
+            cycle([ pygame.image.load(Blaster.BLASTER_SPRITES[player][2]).convert_alpha(),
+                    pygame.image.load(Blaster.BLASTER_SPRITES[player][3]).convert_alpha() ])
         ]
-        self._los = cycle([ pygame.image.load(Blaster.LOS_SPRITES[player][0]),
-                            pygame.image.load(Blaster.LOS_SPRITES[player][1]) ])
-        self._explosion = cycle([ pygame.image.load(Blaster.EXPLOSION_SPRITES[0]),
-                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[1]),
-                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[2]),
-                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[3]),
-                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[4]),
-                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[5]),
-                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[6]),
-                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[7])])
+        self._los = cycle([ pygame.image.load(Blaster.LOS_SPRITES[player][0]).convert_alpha(),
+                            pygame.image.load(Blaster.LOS_SPRITES[player][1]).convert_alpha() ])
+        self._explosion = cycle([ pygame.image.load(Blaster.EXPLOSION_SPRITES[0]).convert_alpha(),
+                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[1]).convert_alpha(),
+                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[2]).convert_alpha(),
+                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[3]).convert_alpha(),
+                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[4]).convert_alpha(),
+                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[5]).convert_alpha(),
+                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[6]).convert_alpha(),
+                                  pygame.image.load(Blaster.EXPLOSION_SPRITES[7]).convert_alpha() ])
 
         self._idle_blaster_gfx = self.blaster_gfx = self._blaster[0].next()
         self.los_gfx = self._los.next()
@@ -128,7 +130,7 @@ class Blaster:
             self.blaster_gfx = self._blaster[0].next()
 
             if self.blaster_gfx == self._idle_blaster_gfx:
-                self.bullets.append(Bullet(self.player, x, y, 270 - self._angle, self.power))
+                self.bullets.append(Bullet(self.game, self.player, x, y, 270 - self._angle, self.power))
                 self._status[Blaster.ACTION] = Blaster.IDLE
                 self.power = 1
 
