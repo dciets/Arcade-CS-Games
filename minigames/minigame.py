@@ -28,11 +28,15 @@ class Minigame:
         self.difficulty = game.difficulty
         self.sec_left = 0
 
-    def init(self): pass
-    def tick(self): pass
+    def init(self):
+        '''Should be overriden by minigame implementation'''
+        pass
+
+    def tick(self):
+        '''Should be overriden by minigame implementation'''
+        pass
 
     def run(self):
-        '''Should be overriden by minigame implementation'''
         self.elapsed_ms = self.game.state.elapsed_ms
         self.screen.fill((0,0,0))
         self.tick()

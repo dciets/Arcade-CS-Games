@@ -20,9 +20,23 @@ Les méthode suivante peuvent être définit dans la classe de jeu:
 
 *Finally, import the minigame class in `/minigames/__init__.py`.*
 
-*Each minigame class must define the `name` attribute that will be displayed to the players.*
+## Minigame class attributes
 
-*The following methods can be defined in the game class:*
+### name
+The name attribute must be overloaded by the minigame implementation. This attribute gives minimal instructions to the player.
+
+### duration
+The name attribute must be overloaded by the minigame implementation. This attribute sets the duration of the minigame.
+
+## Minigame instance attributes
+
+### self.frame
+Returns the number of frames elapsed since the start of the minigame. Every minigame run at a capped 30 FPS.
+
+### self.elapsed_ms
+Returns the number of milliseconds elapsed since the start of the minigame. One minigame `tick()` is roughly 33.33ms.
+
+## Minigame methods
 
 ### init(self)
 Méthode appelé avant une manche du jeu.
