@@ -12,7 +12,7 @@ class Perso:
         self.sprite = Sprite(path)
 
         self.pos = [x,y]
-        self.speed = difficulty * 0.5 + 2
+        self.speed = difficulty * 1.5 + 6
         self.money = 0
 
         self.pushedVector = [0,0]
@@ -46,6 +46,7 @@ class Perso:
             self.pos[1] = 600
             self.pushedVector[1] = -self.pushedVector[1]
 
+        print timeElapsed
         self.pos[0] = self.pos[0] + self.pushedVector[0] * timeElapsed / self.HURT_DURATION
         self.pos[1] = self.pos[1] + self.pushedVector[1] * timeElapsed / self.HURT_DURATION
         self.pushedVector[0] = self.pushedVector[0] - self.pushedVector[0] * timeElapsed / self.HURT_DURATION
@@ -85,7 +86,11 @@ class Perso:
     
     def hurt(self, pos):
         newPos = [self.pos[0] - pos[0], self.pos[1] - pos[1]]
+        if newPos[0] == 0 and newPos[1] == 0:
+            newPos[0] = 1
+            newPos[1] = 1
         max = abs(newPos[0]) if (abs(newPos[0]) > abs(newPos[1])) else abs(newPos[1])
         self.pushedVector = [self.HURT_POWER * newPos[0] / max, self.HURT_POWER * newPos[1] / max]
+        print self.pushedVector
         self.state = "hurt"
         self.sprite.changeSprite("action")
