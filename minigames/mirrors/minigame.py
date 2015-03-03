@@ -23,11 +23,11 @@ class MirrorsMinigame(minigame.Minigame):
     def init(self):
         self.base = BlasterBase(self, 2)
         self.mirrors = []
-        self.mirror_count = MirrorsMinigame.MIRROR_BASE_COUNT + int(1.5 * self.difficulty)
+        self.mirror_count = MirrorsMinigame.MIRROR_BASE_COUNT + self.difficulty
         self.mirror_cooldown = max(MirrorsMinigame.MIRROR_BASE_COOLDOWN - 3 * self.difficulty, 15)
         self.mirror_show_duration = max(MirrorsMinigame.MIRROR_SHOW_DURATION - self.difficulty * 20, 50)
         self.score = [0, 0]
-        self.results = [True, True]
+        self.results = [False, False]
 
     def tick(self):
         self.screen.blit(self.backdrop, (0, -50))

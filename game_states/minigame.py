@@ -12,7 +12,6 @@ class Minigame:
         self.elapsed_ms = 0
         self.duration = self.minigame.get_duration()
         self.timer = Clock()
-        pygame.time.set_timer(USEREVENT + 1, self.duration)
         self.minigame.init()
 
         print('In minigame!')
@@ -21,7 +20,7 @@ class Minigame:
         self.minigame.run()
         self.elapsed_ms += self.timer.tick(self.game.FPS)
 
-        for event in pygame.event.get(USEREVENT + 1):
+        if int(self.minigame.sec_left) <= 0:
             self.game_done()
 
     def game_done(self):

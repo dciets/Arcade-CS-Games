@@ -13,7 +13,6 @@ class Mirror:
 
     SHOW_ANIMATION_DURATION = 25
     HIDE_ANIMATION_DURATION = 10
-    DESTROY_ANIMATION_DURATION = 10
     DESTROY_ANIMATION_FREQUENCY = 4
 
     IMAGES = [os.path.join("minigames/mirrors/images", f) for f in os.listdir("minigames/mirrors/images") if f.startswith("mirror") and os.path.isfile(os.path.join("minigames/mirrors/images", f))]
