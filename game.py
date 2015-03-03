@@ -2,6 +2,7 @@ import inspect
 import pygame
 import sys
 import random
+from pygame.rect import Rect
 import player
 import minigames
 from game_states import menu
@@ -10,11 +11,22 @@ import gfx
 class Game:
     MINIGAMES = [g for _, g in inspect.getmembers(minigames, inspect.isclass)]
 
-    def __init__(self, screen, font):
+    SCREEN_WIDTH = 800
+    SCREEN_HEIGHT = 600
+    BORDER_SIZE = 25
+    GAME_WIDTH = SCREEN_WIDTH - 2 * BORDER_SIZE
+    GAME_HEIGHT = SCREEN_HEIGHT - 2 * BORDER_SIZE
+    GAME_TOP = BORDER_SIZE
+    GAME_BOTTOM = SCREEN_HEIGHT - BORDER_SIZE
+    GAME_LEFT = BORDER_SIZE
+    GAME_RIGHT = SCREEN_HEIGHT - BORDER_SIZE
+
+    def __init__(self, border, font):
         '''Init game state, player score, game count, etc...'''
-        self.screen = screen
+        self.border = border
+        self.screen = border.subsurface(Rect((Game.BORDER_SIZE, Game.BORDER_SIZE), (Game.SCREEN_WIDTH - 2 * Game.BORDER_SIZE, Game.SCREEN_HEIGHT - 2 * Game.BORDER_SIZE)))
         self.font = font
-        self.gfx = gfx.Gfx(screen, font)
+        self.gfx = gfx.Gfx(self.screen, font)
         self.state = menu.Menu(self)
         self.choose_minigame()
         self.difficulty = 0

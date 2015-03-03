@@ -36,18 +36,18 @@ class Splash:
         self.screen.fill((0,0,0))
 
         # Display minigame name
-        self.game.gfx.print_msg(self.game.minigame.name, midtop=(self.scrrct.centerx, 300), color=gfx.WHITE)
+        self.game.gfx.print_msg(self.game.minigame.name, midtop=(self.scrrct.centerx, self.game.GAME_HEIGHT / 2), color=gfx.WHITE)
 
         # Display players lives
-        self.game.gfx.print_msg(self.game.players[0].university, topleft=(30, 30), color=gfx.RED)
-        self.game.gfx.print_msg(self.game.players[1].university, topright=(self.scrrct.w-30, 30), color=gfx.BLUE)
+        self.game.gfx.print_msg(self.game.players[0].university, topleft=(30, 55), color=gfx.RED)
+        self.game.gfx.print_msg(self.game.players[1].university, topright=(self.scrrct.w-30, 55), color=gfx.BLUE)
 
         heart_rect = HEART_SPRITE.get_rect()
-        heart_rect.topleft = (30, 70)
+        heart_rect.topleft = (30, 95)
         for i in range(self.game.players[0].lives):
             self.game.screen.blit(HEART_SPRITE, heart_rect.move(i*(heart_rect.w+10), 0))
 
-        heart_rect.topright = (self.game.screen.get_rect().w - 30, 70)
+        heart_rect.topright = (self.game.screen.get_rect().w - 30, 95)
         for i in range(self.game.players[1].lives):
             self.game.screen.blit(HEART_SPRITE, heart_rect.move(-i*(heart_rect.w+10), 0))
 

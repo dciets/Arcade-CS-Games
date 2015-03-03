@@ -19,11 +19,11 @@ class Menu:
 
         self.vs_txt = game.font.render("VS", 0, (255, 255, 255))
         self.vs_label = self.vs_txt.get_rect()
-        self.vs_label.topleft = (400 - self.vs_label.width/2, 10)
+        self.vs_label.topleft = (game.GAME_WIDTH / 2 - self.vs_label.width/2, 10)
 
         self.player2_txt = self.font.render("<Choose your school>", 0, (0, 0, 255))
         self.player2_label = self.player2_txt.get_rect()
-        self.player2_label.topleft = (600 - self.player2_label.width/2, 20)
+        self.player2_label.topleft = (game.GAME_HEIGHT - self.player2_label.width/2, 20)
 
         self.players_selection = [[0, 0], [0, 0]]
         self.selected = [False, False]
@@ -34,9 +34,9 @@ class Menu:
         # while display "Insert coins..."
         self.game.screen.fill((0, 0, 0))
 
-        r = pygame.Rect(self.players_selection[0][0]*200 + 10, 65 + self.players_selection[0][1]*100, 180, 80)
+        r = pygame.Rect(self.players_selection[0][0]*175 + 10, 65 + self.players_selection[0][1]*100, 180, 80)
         pygame.draw.rect(self.game.screen, (255, 0, 0), r, not self.selected[0])
-        r = pygame.Rect(self.players_selection[1][0]*200 + 20, 75 + self.players_selection[1][1]*100, 160, 60)
+        r = pygame.Rect(self.players_selection[1][0]*175 + 20, 75 + self.players_selection[1][1]*100, 160, 60)
         pygame.draw.rect(self.game.screen, (0, 0, 255), r, not self.selected[1])
 
         if self.selected[0]:
@@ -58,7 +58,7 @@ class Menu:
             school_name = self.font.render(key, 0, (255, 255, 255))
             school_score = self.font.render(str(self.schools_scores[key]), 0, (255, 255, 255))
             school_rect = school_name.get_rect()
-            school_rect.topleft = (int(i/5)*200 + 100, 100 + (i % 5)*100)
+            school_rect.topleft = (int(i/5)*175 + 100, 100 + (i % 5)*100)
             school_rect.x -= school_rect.width/2
             school_rect.y -= school_rect.height/2
             self.game.screen.blit(school_name, school_rect)
