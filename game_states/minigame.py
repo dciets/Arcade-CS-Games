@@ -21,9 +21,8 @@ class Minigame:
         self.minigame.run()
         self.elapsed_ms += self.timer.tick(self.game.FPS)
 
-        for event in pygame.event.get():
-            if event.type == USEREVENT + 1:
-                self.game_done()
+        for event in pygame.event.get(USEREVENT + 1):
+            self.game_done()
 
     def game_done(self):
         results = self.minigame.get_results()

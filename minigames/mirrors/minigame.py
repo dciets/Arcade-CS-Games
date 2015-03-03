@@ -10,9 +10,9 @@ class MirrorsMinigame(minigame.Minigame):
     game_type = minigame.MULTIPLAYER
     max_duration = 10000
 
-    MIRROR_BASE_COUNT = 1
-    MIRROR_BASE_COOLDOWN = 200
-    MIRROR_SHOW_DURATION = 600
+    MIRROR_BASE_COUNT = 3
+    MIRROR_BASE_COOLDOWN = 30
+    MIRROR_SHOW_DURATION = 150
 
     def __init__(self, game):
         minigame.Minigame.__init__(self, game)
@@ -23,20 +23,19 @@ class MirrorsMinigame(minigame.Minigame):
     def init(self):
         self.base = BlasterBase(self, 2)
         self.mirrors = []
-        self.mirror_count = MirrorsMinigame.MIRROR_BASE_COUNT + 2 * self.difficulty
+        self.mirror_count = MirrorsMinigame.MIRROR_BASE_COUNT + int(1.5 * self.difficulty)
+        self.mirror_cooldown = max(MirrorsMinigame.MIRROR_BASE_COOLDOWN - 3 * self.difficulty, 15)
+        self.mirror_show_duration = max(MirrorsMinigame.MIRROR_SHOW_DURATION - self.difficulty * 20, 50)
         self.score = [0, 0]
         self.results = [True, True]
-
-        pygame.time.set_timer(USEREVENT + 7, max(MirrorsMinigame.MIRROR_BASE_COOLDOWN - self.difficulty * 35, 50))
 
     def tick(self):
         self.screen.blit(self.backdrop, (0, -50))
         for event in pygame.event.get():
-            if event.type == USEREVENT + 7:
-                self.mirrors.append(Mirror(self, (self.screen.get_width(), self.screen.get_height()), max(MirrorsMinigame.MIRROR_SHOW_DURATION - self.difficulty * 50, 50), self.mirrors))
-            elif event.type == KEYDOWN:
+            if event.type == KEYDOWN:
                 for i in range(len(self.base.blasters)):
                     if event.key == PLAYERS_MAPPING[i][UP] or event.key == PLAYERS_MAPPING[i][LEFT]:
+
                         self.base.blasters[i].set_motion(Blaster.ACCELERATING)
                         self.base.blasters[i].set_direction(Blaster.RIGHT)
                     elif event.key == PLAYERS_MAPPING[i][DOWN] or event.key == PLAYERS_MAPPING[i][RIGHT]:
@@ -54,6 +53,9 @@ class MirrorsMinigame(minigame.Minigame):
                         self.base.blasters[i].set_direction(Blaster.LEFT)
                     elif event.key == PLAYERS_MAPPING[i][ACTION]:
                         self.base.blasters[i].set_action(Blaster.SHOOTING)
+
+        if self.frame % self.mirror_cooldown == 0 and len(self.mirrors) < self.mirror_count:
+            self.mirrors.append(Mirror(self, (self.screen.get_width(), self.screen.get_height()), self.mirror_show_duration, self.mirrors))
 
         for player in self.base.get_points(self.mirrors):
             self.score[player] += 1

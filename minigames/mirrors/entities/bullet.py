@@ -1,10 +1,11 @@
 from math import *
 import pygame
+from minigames.mirrors.entities.mirror import Mirror
 
 
 class Bullet:
     SCALE = 3
-    BASE_SPEED = 0.6
+    BASE_SPEED = 4.0
     BULLET_SPRITES = [ "minigames/mirrors/images/bullet1.png",
                        "minigames/mirrors/images/bullet2.png" ]
     def __init__(self, game, player, initial_x, initial_y, angle, power):
@@ -25,7 +26,7 @@ class Bullet:
         return 0 <= self._x <= screen.get_width() and 0 <= self._y <= screen.get_height()
 
     def collides_with(self, mirror):
-        return self.gfx.get_rect(center=(self._x, self._y)).colliderect(mirror.gfx.get_rect(topleft=mirror.position)) and not mirror.destroyed
+        return self.gfx.get_rect(center=(self._x, self._y)).colliderect(mirror.gfx.get_rect(topleft=mirror.position)) and mirror.status != Mirror.DESTROYED
 
     def display(self, screen):
         self._x -= self._v * sin(radians(self._a))
