@@ -3,8 +3,8 @@ import pygame
 
 class Cutlery:
     def __init__(self, difficulty):
-        self.ROTATION_SPEED = 10
-        self.FLY_OFF = 10
+        self.ROTATION_SPEED = 20
+        self.FLY_OFF = 20
 
         self.cutleryType = random.randint(0,2)
         if self.cutleryType == 0:
@@ -32,7 +32,7 @@ class Cutlery:
         self.rotDir = 0
         self.move = 0
         self.pos = [random.randint(50, 750), 0]
-        self.speed = random.randint(2, difficulty + 2)
+        self.speed = random.randint(6, difficulty + 6)
         self.active = True
         self.destroy = False
         self.visit = False

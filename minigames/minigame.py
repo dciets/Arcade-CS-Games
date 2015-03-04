@@ -19,26 +19,30 @@ class Minigame:
 
     def __init__(self, game):
         self.game = game
+        self.fps = game.FPS
+        self.elapsed_ms = 0
+        self.frame = 0
         self.screen = game.screen
         self.font = game.font
         self.gfx = game.gfx
         self.difficulty = game.difficulty
-        self.started_at = pygame.time.get_ticks()
+        self.sec_left = 0
 
-    def init(self): pass
-    def tick(self): pass
+    def init(self):
+        '''Should be overriden by minigame implementation'''
+        pass
+
+    def tick(self):
+        '''Should be overriden by minigame implementation'''
+        pass
 
     def run(self):
-        '''Should be overriden by minigame implementation'''
+        self.elapsed_ms = self.game.state.elapsed_ms
         self.screen.fill((0,0,0))
-
         self.tick()
-
-        elapsed_ms = pygame.time.get_ticks() - self.started_at
-        duration = self.get_duration()
-
-        sec_left = str(int((duration - elapsed_ms)/1000))
-        self.gfx.print_msg(sec_left, (30, 550))
+        self.frame += 1
+        self.sec_left = str(int((self.get_duration() - self.elapsed_ms)/1000))
+        self.gfx.print_msg(self.sec_left, (30, 550))
 
     def get_duration(self):
         '''Return minigame duration, can depend on self.difficulty'''

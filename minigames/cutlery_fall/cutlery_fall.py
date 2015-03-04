@@ -11,12 +11,11 @@ class CutleryFall(multiplayer.Minigame):
     max_duration = 10000
 
     def init(self):
+        self.NB_PLAYERS = 2
         self.PEOPLE_DISTANCE = 100
-        self.SPAWN_TIME = 1.0
-        self.WAIT_TIME = 10
-        self.DRAW_SPEED = 30
+        self.SPAWN_TIME = 0.5
         self.currentTime = pygame.time.get_ticks()/1000.0 - self.SPAWN_TIME
-        self.drawTime = pygame.time.get_ticks()/1000.0
+        self.spawn = 0.0
 
         self.background = pygame.image.load("./res/img/cutleryFall/Background.png").convert()
 
@@ -24,16 +23,10 @@ class CutleryFall(multiplayer.Minigame):
         self.cutleries = []
         self.visits = []
 
-    def run(self):
-        self.tick()
-        pygame.time.wait(self.WAIT_TIME)
-
     def tick(self):
         self.events()
         self.update()
-        if pygame.time.get_ticks() - self.drawTime >= self.DRAW_SPEED:
-            self.draw()
-            self.drawTime = pygame.time.get_ticks()
+	self.draw()
 
     def get_results(self):
         if self.players[0].score > self.players[1].score:
@@ -44,6 +37,12 @@ class CutleryFall(multiplayer.Minigame):
             return [False, False]
 
     def update(self):
+        timeElapsed = pygame.time.get_ticks()/1000.0 - self.currentTime
+        self.currentTime = pygame.time.get_ticks()/1000.0
+        
+        for player in self.players:
+            player.update(timeElapsed)
+        
         for cutlery in self.cutleries:
             if cutlery.destroy:
                 self.cutleries.remove(cutlery)
@@ -57,10 +56,10 @@ class CutleryFall(multiplayer.Minigame):
                 self.visits.append(People(cutlery.cutleryType, pos))
                 cutlery.visit = False
 
-        timeElapsed = pygame.time.get_ticks()/1000.0 - self.currentTime
-        if timeElapsed >= self.SPAWN_TIME:
+        self.spawn += timeElapsed
+        if self.spawn >= self.SPAWN_TIME:
             self.cutleries.append(Cutlery(self.difficulty))
-            self.currentTime = pygame.time.get_ticks()/1000.0
+            self.spawn = 0.0
 
     def draw(self):
         # Draw screen
@@ -74,18 +73,20 @@ class CutleryFall(multiplayer.Minigame):
         self.gfx.print_msg(str(self.players[0].score), (30, 30))
         self.gfx.print_msg(str(self.players[1].score), (750, 30))
 
-        # Draw time
-        elapsed_ms = pygame.time.get_ticks() - self.started_at
-        duration = self.get_duration()
-        sec_left = str(int((duration - elapsed_ms)/1000))
-        self.gfx.print_msg(sec_left, (30, 550))
-
     def events(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
-                for cutlery in self.cutleries:
-                    for i in range(2):
+                for i in range(self.NB_PLAYERS):
+                    if not self.players[i].freeze:
                         for j in range(len(input_map.PLAYERS_MAPPING[i])):
-                            if event.key == input_map.PLAYERS_MAPPING[i][j] and cutlery.checkButton(j):
-                                cutlery.slapped(i)
-                                self.players[i].score += 1
+                            if event.key == input_map.PLAYERS_MAPPING[i][j]:
+                                self.players[i].freeze = True
+                                for cutlery in self.cutleries:
+                                    if cutlery.checkButton(j):
+                                        cutlery.slapped(i)
+                                        self.players[i].score += 1
+                                        self.players[i].freeze = False
+                                        break
+                                
+                                i = self.NB_PLAYERS - 1
+                                j = len(input_map.PLAYERS_MAPPING[i]) - 1
