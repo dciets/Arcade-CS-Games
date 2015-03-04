@@ -3,8 +3,9 @@ Jeux pour l'arcade des CS Games 2015
 
 *Game for the CS Games 2015 Arcade*
 
-Began so far:
-Dirty framework hacked together with love <3
+Create a Pull Request to add new game. You can ping @isra17 or email him at [isra017@gmail.com](mailto:isra017@gmail.com) if you have any issue or question.
+
+The arcade can have two player playing at once and has a 4-direction digital joystick + 1 button. Keep the game short and simple. Each round should be about or less than 5 seconds.
 
 ## Ajouter un minigame
 Créer un nouveau module sous `/minigames/` et créer une classe dérivant de `multiplayer.Minigame` ou `singleplayer.Minigame`. Un jeu de type singleplayer consiste à un minigame joué tour par tour jusqu'à ce qu'un joueur ait 3 défaites. Un jeu multijoueur est joué par les deux joueurs simultanément.
