@@ -1,6 +1,7 @@
 #-*-encoding=utf-8-*-
 from datetime import datetime, timedelta
 import json
+import pygame
 
 class EndGame:
     '''Display end game score'''
@@ -26,6 +27,8 @@ class EndGame:
 
     def run(self):
         self.game.screen.fill((0,0,0))
+
+        pygame.event.clear()
 
         if self.winner == -1:
             win_txt = self.game.font.render('It\'s a draw !', 0, (255, 255, 255))
