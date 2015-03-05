@@ -9,6 +9,7 @@ from game_states import menu
 import gfx
 
 class Game:
+    FPS = 30
     MINIGAMES = [g for _, g in inspect.getmembers(minigames, inspect.isclass)]
 
     SCREEN_WIDTH = 800

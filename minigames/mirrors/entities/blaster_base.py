@@ -6,13 +6,14 @@ import random
 class BlasterBase:
     SCALE = 8
 
-    def __init__(self, num_players):
+    def __init__(self, game, num_players):
+        self.game = game
         self.blasters = []
         self.gfx = pygame.image.load("minigames/mirrors/images/blaster_base.png")
-        self.gfx = pygame.transform.scale(self.gfx, (self.gfx.get_width() * BlasterBase.SCALE, self.gfx.get_height() * BlasterBase.SCALE))
+        self.gfx = pygame.transform.scale(self.gfx, (self.gfx.get_width() * BlasterBase.SCALE, self.gfx.get_height() * BlasterBase.SCALE)).convert_alpha()
 
         for player in range(0, num_players):
-            self.blasters.append(Blaster(player))
+            self.blasters.append(Blaster(self.game, player))
 
     def get_points(self, mirrors):
         # If two bullets collide with a single mirror,

@@ -7,7 +7,7 @@ class ExplosionSprite:
     side = 160
     image = pygame.image.load('res/img/shoot_targets/explosion.png')
     center = map(lambda x: x / 2, image.get_rect().size)
-    delay = 4
+    delay = 2
 
     def __init__(self, parent, position):
         self.parent = parent
