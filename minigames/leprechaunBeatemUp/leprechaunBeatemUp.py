@@ -1,3 +1,4 @@
+from minigames import minigame
 from minigames import multiplayer
 from entities import PersoPlayer
 from entities import PersoLeprechaun
@@ -9,18 +10,22 @@ class LeprechaunBeatemUp(multiplayer.Minigame):
     name = 'Hit the Leprechaun!'
     max_duration = 10000
 
+    def __init__(self, game):
+        minigame.Minigame.__init__(self, game)
+
+        self.width = game.GAME_WIDTH
+        self.height = game.GAME_HEIGHT
+
     def init(self):
         self.WAIT_TIME = 10
         self.DRAW_SPEED = 30
-
-        self.width, self.height = self.screen.get_size()
 
         self.rainbow = pygame.image.load("./res/img/leprechaunBeatemUp/Background.png").convert()
         self.coin = pygame.image.load("./res/img/leprechaunBeatemUp/Coin.png").convert_alpha()
 
         self.players = [PersoPlayer(50, 300, "./res/img/leprechaunBeatemUp/Player1.png", self.difficulty), \
-                        PersoPlayer(750, 300, "./res/img/leprechaunBeatemUp/Player2.png", self.difficulty), ]
-        self.enemy = PersoLeprechaun(400, 300, "./res/img/leprechaunBeatemUp/Leprechaun.png", self.difficulty, self.players)
+                        PersoPlayer(700, 300, "./res/img/leprechaunBeatemUp/Player2.png", self.difficulty), ]
+        self.enemy = PersoLeprechaun(375, 300, "./res/img/leprechaunBeatemUp/Leprechaun.png", self.difficulty, self.players)
         self.coins = []
         self.currentTime = pygame.time.get_ticks()/1000.0
         self.drawTime = pygame.time.get_ticks()/1000.0
@@ -70,10 +75,10 @@ class LeprechaunBeatemUp(multiplayer.Minigame):
         for coin in self.coins:
             coin.draw(self.screen)
 
-        self.screen.blit(self.coin, (60,25))
-        self.screen.blit(self.coin, (710,25))
+        self.screen.blit(self.coin, (60, 25))
+        self.screen.blit(self.coin, (660,25))
         self.gfx.print_msg(str(self.players[0].money), (30, 30))
-        self.gfx.print_msg(str(self.players[1].money), (750, 30))
+        self.gfx.print_msg(str(self.players[1].money), (700, 30))
 
         elapsed_ms = pygame.time.get_ticks() - self.started_at
         duration = self.get_duration()

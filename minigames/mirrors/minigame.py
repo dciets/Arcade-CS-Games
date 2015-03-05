@@ -27,7 +27,7 @@ class MirrorsMinigame(minigame.Minigame):
         self.mirror_count = MirrorsMinigame.MIRROR_BASE_COUNT + 2 * self.difficulty
         self.mirror_cooldown = 0
         self.score = [0, 0]
-        self.results = [True, True]
+        self.results = [False, False]
 
     def tick(self):
         self.screen.blit(self.backdrop, (0, -50))

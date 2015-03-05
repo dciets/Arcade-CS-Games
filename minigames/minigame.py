@@ -38,7 +38,7 @@ class Minigame:
         duration = self.get_duration()
 
         sec_left = str(int((duration - elapsed_ms)/1000))
-        self.gfx.print_msg(sec_left, (30, 550))
+        self.gfx.print_msg(sec_left, (15, 515))
 
     def get_duration(self):
         '''Return minigame duration, can depend on self.difficulty'''
