@@ -1,9 +1,13 @@
+from itertools import cycle
 import pygame
+from pygame.rect import Rect
 
 SINGLEPLAYER = 1
 MULTIPLAYER = 2
 
 class Minigame:
+    COUNTDOWN_SPRITES = pygame.image.load("./res/img/ui/bomb.png")
+
     '''
     Implement shared code to minigame such as time left or
     players' input.
@@ -18,6 +22,18 @@ class Minigame:
         return klass.game_type == SINGLEPLAYER
 
     def __init__(self, game):
+        # Countdown timer GFX
+        self.ct_bomb = pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((0, 0), (16, 16))).convert_alpha())
+        self.ct_base_string = pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((17, 0), (16, 16))).convert_alpha())
+        self.ct_string = pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((34, 0), (4, 16))).convert_alpha())
+        self.ct_sparks = cycle([pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((39, 0), (16, 16))).convert_alpha()),
+                                pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((39, 17), (16, 16))).convert_alpha())])
+        self.ct_spark = self.ct_sparks.next()
+        self.ct_one = pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((0, 17), (11, 16))).convert_alpha())
+        self.ct_two = pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((12, 17), (11, 16))).convert_alpha())
+        self.ct_three = pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((24, 17), (11, 16))).convert_alpha())
+        self.ct_explosion = pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((0, 34), (48, 48))).convert_alpha())
+
         self.game = game
         self.fps = game.FPS
         self.elapsed_ms = 0
@@ -39,10 +55,44 @@ class Minigame:
     def run(self):
         self.elapsed_ms = self.game.state.elapsed_ms
         self.screen.fill((0,0,0))
+        self.game.border.fill((0,0,0))
         self.tick()
+        self.countdown()
         self.frame += 1
-        self.sec_left = str(int((self.get_duration() - self.elapsed_ms)/1000))
-        self.gfx.print_msg(self.sec_left, (15, 515))
+
+    def countdown(self):
+        self.sec_left = int((self.get_duration() - self.elapsed_ms)/1000)
+
+        spark_x = 32
+        spark_y = self.game.SCREEN_HEIGHT - 24
+
+        if self.sec_left == 1:
+            self.game.border.blit(self.ct_explosion, self.ct_explosion.get_rect(bottomleft=(0, self.game.SCREEN_HEIGHT)))
+        elif self.sec_left > 1:
+            self.game.border.blit(self.ct_bomb, self.ct_bomb.get_rect(bottomleft=(0, self.game.SCREEN_HEIGHT)))
+
+            if self.sec_left > 2:
+                spark_x += 32
+                spark_y = self.game.SCREEN_HEIGHT
+                self.game.border.blit(self.ct_base_string, self.ct_base_string.get_rect(bottomleft=(32, self.game.SCREEN_HEIGHT)))
+
+                if self.sec_left > 3:
+                    for t in range(0, self.sec_left - 3):
+                        for i in range(0, 10):
+                            spark_x += 8
+                            self.game.border.blit(self.ct_string, self.ct_string.get_rect(bottomleft=(64 + (t * 80) + (i * 8), self.game.SCREEN_HEIGHT)))
+
+            if self.sec_left == 2:
+                self.game.border.blit(self.ct_one, self.ct_one.get_rect(bottomleft=(8, self.game.SCREEN_HEIGHT - 40)))
+            elif self.sec_left == 3:
+               self.game.border.blit(self.ct_two, self.ct_two.get_rect(bottomleft=(8, self.game.SCREEN_HEIGHT - 40)))
+            elif self.sec_left == 4:
+               self.game.border.blit(self.ct_three, self.ct_three.get_rect(bottomleft=(8, self.game.SCREEN_HEIGHT - 40)))
+
+            if self.frame % 4 == 0 or (self.frame % 3 == 0 and self.sec_left == 2):
+                self.ct_spark = self.ct_sparks.next()
+
+            self.game.border.blit(self.ct_spark, self.ct_spark.get_rect(bottomleft=(spark_x, spark_y)))
 
     def get_duration(self):
         '''Return minigame duration, can depend on self.difficulty'''
