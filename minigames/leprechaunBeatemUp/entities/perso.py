@@ -33,20 +33,19 @@ class Perso:
         self.sprite.update(timeElapsed)
 
     def updatePos(self, timeElapsed):
-        if self.pos[0] < 0:
-            self.pos[0] = 0
+        if self.pos[0] < 25:
+            self.pos[0] = 25
             self.pushedVector[0] = -self.pushedVector[0]
-        elif self.pos[0] > 800:
-            self.pos[0] = 800
+        elif self.pos[0] > 725:
+            self.pos[0] = 725
             self.pushedVector[0] = -self.pushedVector[0]
         if self.pos[1] < 200:
             self.pos[1] = 200
             self.pushedVector[1] = -self.pushedVector[1]
-        elif self.pos[1] > 600:
-            self.pos[1] = 600
+        elif self.pos[1] > 525:
+            self.pos[1] = 525
             self.pushedVector[1] = -self.pushedVector[1]
 
-        print timeElapsed
         self.pos[0] = self.pos[0] + self.pushedVector[0] * timeElapsed / self.HURT_DURATION
         self.pos[1] = self.pos[1] + self.pushedVector[1] * timeElapsed / self.HURT_DURATION
         self.pushedVector[0] = self.pushedVector[0] - self.pushedVector[0] * timeElapsed / self.HURT_DURATION
