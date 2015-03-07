@@ -1,6 +1,7 @@
 from itertools import cycle
 import pygame
 from pygame.rect import Rect
+from game_states.OverlayedState import OverlayedState
 
 SINGLEPLAYER = 1
 MULTIPLAYER = 2
@@ -34,6 +35,11 @@ class Minigame:
         self.ct_three = pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((24, 17), (11, 16))).convert_alpha())
         self.ct_explosion = pygame.transform.scale2x(Minigame.COUNTDOWN_SPRITES.subsurface(Rect((0, 34), (48, 48))).convert_alpha())
 
+        # Score markers
+        self.score = []
+        self.score_marker_1 = pygame.image.load('res/img/ui/score1.png').convert_alpha()
+        self.score_marker_2 = pygame.image.load('res/img/ui/score2.png').convert_alpha()
+
         self.game = game
         self.fps = game.FPS
         self.elapsed_ms = 0
@@ -55,12 +61,16 @@ class Minigame:
     def run(self):
         self.elapsed_ms = self.game.state.elapsed_ms
         self.screen.fill((0,0,0))
-        self.game.border.fill((0,0,0))
         self.tick()
-        self.countdown()
+        if len(self.score) == 2: self.display_score_markers()
+        self.display_overlay()
         self.frame += 1
 
-    def countdown(self):
+    def display_score_markers(self):
+        self.game.border.blit(self.score_marker_1, self.score_marker_1.get_rect(topleft=(350, 5)))
+        self.game.border.blit(self.score_marker_2, self.score_marker_2.get_rect(topleft=(450, 5)))
+
+    def display_overlay(self):
         self.sec_left = int((self.get_duration() - self.elapsed_ms)/1000)
 
         spark_x = 32

@@ -3,6 +3,7 @@ import pygame
 import sys
 import random
 from pygame.rect import Rect
+from game_states.OverlayedState import OverlayedState
 import player
 import minigames
 from game_states import menu
@@ -48,4 +49,9 @@ class Game:
 
     def choose_minigame(self):
         self.minigame = random.choice(Game.MINIGAMES)
+
+    def overlay(self):
+        if isinstance(self.state, OverlayedState):
+            self.states[-1].display_hud()
+
 

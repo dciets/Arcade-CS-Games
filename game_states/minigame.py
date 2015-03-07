@@ -2,11 +2,14 @@ from datetime import datetime, timedelta
 import pygame
 from pygame.constants import USEREVENT
 from pygame.time import Clock
+from game_states.OverlayedState import OverlayedState
 import splash
 
-class Minigame:
+class Minigame(OverlayedState):
     '''Play a minigame!'''
     def __init__(self, game):
+        OverlayedState.__init__(self, game)
+
         self.game = game
         self.minigame = self.game.minigame(self.game)
         self.elapsed_ms = 0
@@ -17,7 +20,9 @@ class Minigame:
         print('In minigame!')
 
     def run(self):
+        self.game.border.fill((0,0,0))
         self.minigame.run()
+        self.display_hud()
         self.elapsed_ms += self.timer.tick(self.game.FPS)
 
         if int(self.minigame.sec_left) <= 0:
