@@ -23,6 +23,8 @@ class Minigame(OverlayedState):
         self.game.border.fill((0,0,0))
         self.minigame.run()
         self.display_hud()
+        if len(self.minigame.score) == 2: self.minigame.display_score_markers()
+        self.minigame.display_overlay()
         self.elapsed_ms += self.timer.tick(self.game.FPS)
 
         if int(self.minigame.sec_left) <= 0:

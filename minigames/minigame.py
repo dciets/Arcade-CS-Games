@@ -62,8 +62,6 @@ class Minigame:
         self.elapsed_ms = self.game.state.elapsed_ms
         self.screen.fill((0,0,0))
         self.tick()
-        if len(self.score) == 2: self.display_score_markers()
-        self.display_overlay()
         self.frame += 1
 
     def display_score_markers(self):

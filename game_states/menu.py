@@ -32,7 +32,7 @@ class Menu:
         # Show game menu
         # Perhaps something that await two player input
         # while display "Insert coins..."
-        self.game.screen.fill((0, 0, 0))
+        self.game.border.fill((0, 0, 0))
 
         r = pygame.Rect(self.players_selection[0][0]*175 + 10, 65 + self.players_selection[0][1]*100, 180, 80)
         pygame.draw.rect(self.game.screen, (255, 0, 0), r, not self.selected[0])

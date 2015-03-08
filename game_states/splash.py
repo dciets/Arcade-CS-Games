@@ -34,19 +34,10 @@ class Splash(OverlayedState):
             self.game.state = endgame.EndGame(self.game)
 
         self.game.border.fill((0,0,0))
-        #self.display_hud()
+        self.display_hud()
 
         # Display minigame name
         self.game.gfx.print_msg(self.game.minigame.name, midtop=(self.scrrct.centerx, self.game.GAME_HEIGHT / 2), color=gfx.WHITE)
-
-        # heart_rect = HEART_SPRITE.get_rect()
-        # heart_rect.topleft = (30, 95)
-        # for i in range(self.game.players[0].lives):
-        #     self.game.screen.blit(HEART_SPRITE, heart_rect.move(i*(heart_rect.w+10), 0))
-        #
-        # heart_rect.topright = (self.game.screen.get_rect().w - 30, 95)
-        # for i in range(self.game.players[1].lives):
-        #     self.game.screen.blit(HEART_SPRITE, heart_rect.move(-i*(heart_rect.w+10), 0))
 
         # Display who's playing next for single player minigame
         if self.game.minigame.is_singleplayer():
