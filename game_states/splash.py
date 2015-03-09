@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 from datetime import datetime, timedelta
 import random
-from game_states.OverlayedState import OverlayedState
+from game_states.overlay_state import OverlayedState
 import minigame
 import endgame
 import gfx

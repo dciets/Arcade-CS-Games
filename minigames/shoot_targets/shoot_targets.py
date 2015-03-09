@@ -14,7 +14,7 @@ class ShootTargets(minigame.Minigame):
         minigame.Minigame.__init__(self, game)
 
         self.screen_rect = self.screen.get_rect()
-
+        self.score = [0, 0]
         self.sprites = []
         self.players = [Player(self, 0), Player(self, 1)]
         self.targets = generate_targets(self)
@@ -24,6 +24,9 @@ class ShootTargets(minigame.Minigame):
                 self.players[0].points <= self.players[1].points]
 
     def tick(self):
+        self.score[0] = self.players[0].points
+        self.score[1] = self.players[1].points
+
         keys = pygame.key.get_pressed()
 
         for i, player in enumerate(self.players):
@@ -61,11 +64,3 @@ class ShootTargets(minigame.Minigame):
 
         for entity in entities:
             entity.render()
-
-        self.game.gfx.print_msg(str(self.players[0].points),
-                                topleft=(40, 40),
-                                color=(255, 0, 0))
-
-        self.game.gfx.print_msg(str(self.players[1].points),
-                                topright=(self.screen_rect.width - 40, 40),
-                                color=(0, 255, 255))

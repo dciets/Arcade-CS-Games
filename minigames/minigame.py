@@ -1,7 +1,7 @@
 from itertools import cycle
 import pygame
 from pygame.rect import Rect
-from game_states.OverlayedState import OverlayedState
+from game_states.overlay_state import OverlayedState
 
 SINGLEPLAYER = 1
 MULTIPLAYER = 2
@@ -65,8 +65,15 @@ class Minigame:
         self.frame += 1
 
     def display_score_markers(self):
-        self.game.border.blit(self.score_marker_1, self.score_marker_1.get_rect(topleft=(350, 5)))
-        self.game.border.blit(self.score_marker_2, self.score_marker_2.get_rect(topleft=(450, 5)))
+        font = pygame.font.Font('res/font/ps2p.ttf', 13)
+        p1_score_text = font.render(str(self.score[0]), 0, (255, 0, 0))
+        p2_score_text = font.render(str(self.score[1]), 0, (0, 0, 255))
+
+        self.game.border.blit(self.score_marker_1, self.score_marker_1.get_rect(topright=(354, 5)))
+        self.game.border.blit(self.score_marker_2, self.score_marker_2.get_rect(topleft=(448, 5)))
+
+        self.game.border.blit(p1_score_text, p1_score_text.get_rect(topright=(345, 20)))
+        self.game.border.blit(p2_score_text, p2_score_text.get_rect(topleft=(463, 20)))
 
     def display_overlay(self):
         self.sec_left = int((self.get_duration() - self.elapsed_ms)/1000)

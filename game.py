@@ -3,7 +3,7 @@ import pygame
 import sys
 import random
 from pygame.rect import Rect
-from game_states.OverlayedState import OverlayedState
+from game_states.overlay_state import OverlayedState
 import player
 import minigames
 from game_states import menu

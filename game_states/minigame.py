@@ -2,7 +2,7 @@ from datetime import datetime, timedelta
 import pygame
 from pygame.constants import USEREVENT
 from pygame.time import Clock
-from game_states.OverlayedState import OverlayedState
+from game_states.overlay_state import OverlayedState
 import splash
 
 class Minigame(OverlayedState):

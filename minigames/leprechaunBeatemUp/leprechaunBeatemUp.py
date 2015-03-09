@@ -17,6 +17,7 @@ class LeprechaunBeatemUp(multiplayer.Minigame):
         self.height = game.GAME_HEIGHT
 
     def init(self):
+        self.score = [0, 0]
         self.rainbow = pygame.image.load("./res/img/leprechaunBeatemUp/Background.png").convert()
         self.coin = pygame.image.load("./res/img/leprechaunBeatemUp/Coin.png").convert_alpha()
 
@@ -27,6 +28,9 @@ class LeprechaunBeatemUp(multiplayer.Minigame):
         self.currentTime = pygame.time.get_ticks()/1000.0
 
     def tick(self):
+        self.score[0] = self.players[0].money
+        self.score[1] = self.players[1].money
+
         self.events()
         self.update(pygame.time.get_ticks()/1000.0 - self.currentTime)
         self.draw()
@@ -63,11 +67,6 @@ class LeprechaunBeatemUp(multiplayer.Minigame):
 
         for coin in self.coins:
             coin.draw(self.screen)
-
-        self.screen.blit(self.coin, (60, 25))
-        self.screen.blit(self.coin, (660,25))
-        self.gfx.print_msg(str(self.players[0].money), (30, 30))
-        self.gfx.print_msg(str(self.players[1].money), (700, 30))
 
     def events(self):
         pygame.event.get()
