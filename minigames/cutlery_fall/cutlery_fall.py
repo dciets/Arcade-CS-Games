@@ -26,7 +26,7 @@ class CutleryFall(multiplayer.Minigame):
     def tick(self):
         self.events()
         self.update()
-	self.draw()
+        self.draw()
 
     def get_results(self):
         if self.players[0].score > self.players[1].score:
