@@ -12,14 +12,17 @@ def cycle_shuffled_iterator(items):
     '''
     Iterates infinitely through shuffled versions of the given list
     '''
-    xs = []
+    xs = items[:]
+    i = len(xs)
 
     while True:
-        if len(xs) == 0:
-            xs = items[:]
+        if i == len(xs):
             random.shuffle(xs)
+            i = 0
 
-        yield xs.pop()
+        yield xs[i]
+
+        i += 1
 
 
 class Game:
