@@ -7,6 +7,24 @@ import minigames
 from game_states import menu
 import gfx
 
+
+def cycle_shuffled_iterator(items):
+    '''
+    Iterates infinitely through shuffled versions of the given list
+    '''
+    xs = items[:]
+    i = len(xs)
+
+    while True:
+        if i == len(xs):
+            random.shuffle(xs)
+            i = 0
+
+        yield xs[i]
+
+        i += 1
+
+
 class Game:
     FPS = 30
     MINIGAMES = [g for _, g in inspect.getmembers(minigames, inspect.isclass)]
@@ -17,6 +35,7 @@ class Game:
         self.font = font
         self.gfx = gfx.Gfx(screen, font)
         self.state = menu.Menu(self)
+        self.game_iterator = cycle_shuffled_iterator(Game.MINIGAMES)
         self.choose_minigame()
         self.difficulty = 0
         self.players = [player.Player(), player.Player()]
@@ -35,5 +54,5 @@ class Game:
         self.running = False
 
     def choose_minigame(self):
-        self.minigame = random.choice(Game.MINIGAMES)
+        self.minigame = next(self.game_iterator)
 
