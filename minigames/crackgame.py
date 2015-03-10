@@ -14,10 +14,10 @@ class CrackGame(minigame.Minigame):
     DEAD_IMAGE = pygame.image.load('./res/img/crackgame/dead.png')
 
     CRACK_PATTERNS = [
-        [[150, 150, 150, 150, 150], [300, 150, 300, 150]],  # Difficulty 0
-        [[], []],  # Difficulty 1
-        [[], []],  # Difficulty 2
-        [[], []],  # Difficulty 3
+        [[300, 300], [150, 300, 150, 300]],  # Difficulty 0
+        [[200, 150, 200, 150], [150, 200, 150, 200]],  # Difficulty 1
+        [[150, 200, 150, 200, 150], [200, 200, 200, 200, 200]],  # Difficulty 2
+        [[400], [250, 250, 250], [250, 300, 150]],  # Difficulty 3
     ]
 
     def __init__(self, game):

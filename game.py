@@ -9,8 +9,7 @@ import gfx
 
 class Game:
     FPS = 30
-    #MINIGAMES = [g for _, g in inspect.getmembers(minigames, inspect.isclass)]
-    MINIGAMES = [minigames.CrackGame]
+    MINIGAMES = [g for _, g in inspect.getmembers(minigames, inspect.isclass)]
 
     def __init__(self, screen, font):
         '''Init game state, player score, game count, etc...'''
