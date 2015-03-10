@@ -35,6 +35,9 @@ class Minigame(OverlayedState):
         for player, result in zip(self.game.players, results):
             if not result:
                 player.lives -= 1
+            else:
+                player.wins += 1
+
         self.game.state = splash.Splash(self.game)
 
         if self.game.minigame.is_singleplayer():
