@@ -18,23 +18,24 @@ class CrackGame(minigame.Minigame):
         [[], []],  # Difficulty 1
         [[], []],  # Difficulty 2
         [[], []],  # Difficulty 3
-        [[], []]  # Difficulty >4
     ]
 
     def __init__(self, game):
         minigame.Minigame.__init__(self, game)
-        if self.difficulty > 4:
-            self.difficulty = 4
+        if self.difficulty > 3:
+            self.difficulty = 3
         self.max_duration = 6000 - self.difficulty*1000
+        self.n_ticks = self.max_duration/33.33
         self.width, self.height = self.screen.get_size()
         self.cracks = random.choice(CrackGame.CRACK_PATTERNS[self.difficulty])
         self.sidewalk_height = 100
         self.sidewalk_y = 200
         self.current_frame = 0
-        self.positions = [[50, self.sidewalk_y+self.sidewalk_height/2], [50, self.sidewalk_y+self.sidewalk_height/2 + 2*self.sidewalk_height]]
+        self.positions = [[0, self.sidewalk_y+self.sidewalk_height/2], [0, self.sidewalk_y+self.sidewalk_height/2 + 2*self.sidewalk_height]]
         self.animation_counter = 0
-        self.animation = 50
+        self.animation = 60
         self.jumps = [0, 0]
+        self.jumping = [False, False]
         self.dead = [False, False]
         for i in range(3):
             CrackGame.IMAGES[i] = CrackGame.IMAGES[i].convert_alpha()
@@ -54,7 +55,7 @@ class CrackGame(minigame.Minigame):
         for i in range(2):
             if self.dead[i]:
                 img = CrackGame.DEAD_IMAGE
-            elif self.jumps[i] == 0:
+            elif not self.jumps[i]:
                 img = CrackGame.IMAGES[self.current_frame]
             else:
                 img = CrackGame.JUMP_IMAGE
@@ -66,7 +67,7 @@ class CrackGame(minigame.Minigame):
                 pygame.draw.aaline(self.screen, (0, 0, 0), (p + crack - 10, self.sidewalk_y+self.sidewalk_height + i*2*self.sidewalk_height), (p + crack + 10, self.sidewalk_y + i*2*self.sidewalk_height))
                 pygame.draw.aaline(self.screen, (0, 0, 0), (p + crack - 10, self.sidewalk_y+self.sidewalk_height + i*2*self.sidewalk_height), (p + crack - 10, self.sidewalk_y+self.sidewalk_height + i*2*self.sidewalk_height + self.sidewalk_height/5))
                 p += crack
-                if self.jumps[i] == 0:
+                if not self.jumping[i]:
                     if self.positions[i][0] - img.get_rect().width/4 < p < self.positions[i][0] + img.get_rect().width/4:
                         self.dead[i] = True
 
@@ -80,23 +81,25 @@ class CrackGame(minigame.Minigame):
             if event.type == pygame.KEYDOWN:
                 for i in range(2):
                     if event.key == input_map.PLAYERS_MAPPING[i][input_map.ACTION]:
-                        if self.jumps[i] == 0:
-                            self.jumps[i] = -1
+                        if not self.jumping[i]:
+                            self.jumps[i] = -10
+                            self.jumping[i] = True
 
         for i in range(2):
             if not self.dead[i]:
-                self.positions[i][0] += 2*float(self.width)/self.max_duration
+                self.positions[i][0] += 1.5*self.width/self.n_ticks
                 self.positions[i][1] += self.jumps[i]
                 if self.jumps[i] == 0:
-                    self.jumps[i] = 0.05 + 0.05-self.max_duration * 1e-05
+                    self.jumps[i] = 1
                 else:
-                    self.jumps[i] += 0.005 + 0.005 - self.max_duration * 1e-06
+                    self.jumps[i] += 1
 
                 if self.positions[i][1] >= self.sidewalk_y+self.sidewalk_height/2 + 2*i*self.sidewalk_height and self.jumps[i] >= 0:
                     self.jumps[i] = 0
+                    self.jumping[i] = False
                     self.positions[i][1] = self.sidewalk_y+self.sidewalk_height/2 + 2*i*self.sidewalk_height
 
-        self.animation_counter += 1
+        self.animation_counter += 30
         if self.animation_counter >= self.animation:
             self.current_frame += 1
             if self.current_frame == len(CrackGame.IMAGES):
