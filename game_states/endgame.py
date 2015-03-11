@@ -54,5 +54,6 @@ class EndGame:
             self.game.screen.blit(new_score, new_score_rect)
 
         if self.started_at + timedelta(seconds=10) < datetime.now():
+            self.game.init()
             self.game.state = menu.Menu(self.game)
 

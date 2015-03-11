@@ -48,6 +48,9 @@ class Game:
         self.font = font
         self.gfx = gfx.Gfx(self.screen, font)
         self.state = menu.Menu(self)
+        self.init()
+
+    def init(self):
         self.game_iterator = cycle_shuffled_iterator(Game.MINIGAMES)
         self.choose_minigame()
         self.difficulty = 0

@@ -6,8 +6,8 @@ class OverlayedState:
     def __init__(self, game):
         # Hah. I'm funny!
         self.player_names = [
-            game.players[0].university if game.players[0].university != "McGill" or random.randint(0, 1000) > 5 else "MgCil",
-            game.players[1].university if game.players[1].university != "McGill" or random.randint(0, 1000) > 5 else "MgCil"
+            game.players[0].university if game.players[0].university != "McGill" or random.randint(0, 50) > 5 else "MgCil",
+            game.players[1].university if game.players[1].university != "McGill" or random.randint(0, 50) > 5 else "MgCil"
         ]
         self.game = game
         self.font = pygame.font.Font('res/font/ps2p.ttf', 14)

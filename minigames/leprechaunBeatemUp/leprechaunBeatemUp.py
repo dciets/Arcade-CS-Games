@@ -2,6 +2,7 @@ from minigames import multiplayer
 from entities import PersoPlayer
 from entities import PersoLeprechaun
 from entities import Coin
+from minigames import minigame
 import pygame
 import input_map
 
