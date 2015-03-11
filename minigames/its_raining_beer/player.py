@@ -10,7 +10,7 @@ class PlayerState:
 
 class Player(Sprite):
     IMAGE_DIRECTORY = "res/img/its_raining_beer/"
-    SPEED = 0.7
+    SPEED = 12
 
     def __init__(self, name, position, width, *groups):
         super(Player, self).__init__(*groups)
@@ -40,7 +40,7 @@ class Player(Sprite):
         # Vertical speed
         new_y = self.y
         if self.state == PlayerState.JUMPING:
-            self.velocity -= 0.03
+            self.velocity -= 2.5
             new_y -= self.velocity
             if new_y >= game_rect.height:
                 new_y = game_rect.height
@@ -71,10 +71,10 @@ class Player(Sprite):
     def jump(self):
         if self.state == PlayerState.GROUND:
             self.state = PlayerState.JUMPING
-            self.velocity = 4
+            self.velocity = 35
 
     def blit(self, screen):
-        if self.ticks % 30 == 0:
+        if self.ticks % 2 == 0:
             self.image_id += 1
             self.image_id %= len(self.images[self.direction])
         elif self.image_id >= len(self.images[self.direction]):

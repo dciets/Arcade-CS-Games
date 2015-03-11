@@ -15,7 +15,7 @@ class BeerManager():
         self.ticks += 1
 
         if len(self.beers) < self.max_beers:
-            if self.ticks % 200 == 0:
+            if self.ticks % 12 == 0:
                 self.beers.append(Beer((random.randint(20, self.width - 20), -50), int(0.05 * self.width), self.default_speed + random.random() * 0.25))
 
         for beer in self.beers:

@@ -4,7 +4,6 @@ from pygame.sprite import Sprite
 
 class Beer(Sprite):
     IMAGE_DIRECTORY = "res/img/its_raining_beer/"
-    SPEED = 0.7
 
     def __init__(self, position, width, speed, *groups):
         super(Beer, self).__init__(*groups)

@@ -18,7 +18,7 @@ class ItsRainingBeer(multiplayer.Minigame):
         self.game_rect = pygame.Rect(0, 0, self.width, int(self.height * 0.78))
         self.players = [Player("p1", (int(0.25 * self.width), int(self.height * 0.78)), int(0.05 * self.width)),
                         Player("p2", (int(0.75 * self.width), int(self.height * 0.78)), int(0.05 * self.width))]
-        self.beer_manager = BeerManager(self.MAX_BEERS, 0.3 + self.difficulty * 0.25, (self.width, self.height))
+        self.beer_manager = BeerManager(self.MAX_BEERS, 6 + self.difficulty * 2, (self.width, self.height))
 
     def tick(self):
         self.beer_manager.update()
