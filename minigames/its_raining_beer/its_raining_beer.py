@@ -43,8 +43,7 @@ class ItsRainingBeer(multiplayer.Minigame):
             player.blit(self.screen)
         self.beer_manager.blit(self.screen)
 
-        self.gfx.print_msg(str(self.players[0].score), (self.width / 2 - 200, self.height * 0.05), color=(255, 0, 0))
-        self.gfx.print_msg(str(self.players[1].score), (self.width / 2 + 200, self.height * 0.05), color=(0, 0, 255))
+        self.score = [self.players[0].score, self.players[1].score]
 
     def get_results(self):
         if self.players[0].score == 0 and self.players[1].score == 0:
