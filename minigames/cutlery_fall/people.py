@@ -3,7 +3,7 @@ import random
 
 class People:
     def __init__(self, type, pos):
-        i = random.randint(1,3)
+        i = random.randint(1,4)
         if type == 0:
             self.image = pygame.image.load("./res/img/cutleryFall/woman/woman" + str(i) + ".png").convert_alpha()
         elif type == 1:
