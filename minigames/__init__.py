@@ -5,3 +5,4 @@ from shoot_targets.shoot_targets import ShootTargets
 from leprechaunBeatemUp.leprechaunBeatemUp import LeprechaunBeatemUp
 from cutlery_fall.cutlery_fall import CutleryFall
 from crackgame import CrackGame
+from chiotteclean import ChiotteGame
