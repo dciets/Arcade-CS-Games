@@ -2,6 +2,7 @@ from minigames import multiplayer
 from entities import PersoPlayer
 from entities import PersoLeprechaun
 from entities import Coin
+from minigames import minigame
 import pygame
 import input_map
 
@@ -9,17 +10,27 @@ class LeprechaunBeatemUp(multiplayer.Minigame):
     name = 'Hit the Leprechaun!'
     max_duration = 10000
 
+    def __init__(self, game):
+        minigame.Minigame.__init__(self, game)
+
+        self.width = game.GAME_WIDTH
+        self.height = game.GAME_HEIGHT
+
     def init(self):
+        self.score = [0, 0]
         self.rainbow = pygame.image.load("./res/img/leprechaunBeatemUp/Background.png").convert()
         self.coin = pygame.image.load("./res/img/leprechaunBeatemUp/Coin.png").convert_alpha()
 
         self.players = [PersoPlayer(50, 300, "./res/img/leprechaunBeatemUp/Player1.png", self.difficulty), \
-                        PersoPlayer(750, 300, "./res/img/leprechaunBeatemUp/Player2.png", self.difficulty), ]
-        self.enemy = PersoLeprechaun(400, 300, "./res/img/leprechaunBeatemUp/Leprechaun.png", self.difficulty, self.players)
+                        PersoPlayer(700, 300, "./res/img/leprechaunBeatemUp/Player2.png", self.difficulty), ]
+        self.enemy = PersoLeprechaun(375, 300, "./res/img/leprechaunBeatemUp/Leprechaun.png", self.difficulty, self.players)
         self.coins = []
         self.currentTime = pygame.time.get_ticks()/1000.0
 
     def tick(self):
+        self.score[0] = self.players[0].money
+        self.score[1] = self.players[1].money
+
         self.events()
         self.update(pygame.time.get_ticks()/1000.0 - self.currentTime)
         self.draw()
@@ -56,11 +67,6 @@ class LeprechaunBeatemUp(multiplayer.Minigame):
 
         for coin in self.coins:
             coin.draw(self.screen)
-
-        self.screen.blit(self.coin, (60,25))
-        self.screen.blit(self.coin, (710,25))
-        self.gfx.print_msg(str(self.players[0].money), (30, 30))
-        self.gfx.print_msg(str(self.players[1].money), (750, 30))
 
     def events(self):
         pygame.event.get()

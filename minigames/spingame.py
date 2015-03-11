@@ -22,7 +22,7 @@ class SpinGame(minigame.Minigame):
         self.difficulty = game.difficulty if game.difficulty < 5 else 5
         self.max_duration = 1000 * (8-self.difficulty)
         self.width, self.height = self.screen.get_size()
-        self.player_turns = [0, 0]
+        self.score = [0, 0]
         self.player_positions = [[0, 0, 0, 0], [0, 0, 0, 0]]
         self.font = pygame.font.Font('res/font/ps2p.ttf', 16)
         self.counter = 0
@@ -36,19 +36,15 @@ class SpinGame(minigame.Minigame):
 
     def get_results(self):
         results = [False, False]
-        for player_turn in self.player_turns:
+        for player_turn in self.score:
             if player_turn >= 7:
-                results[self.player_turns.index(player_turn)] = True
+                results[self.score.index(player_turn)] = True
         return results
 
     def draw(self):
         self.screen.fill((0, 0, 0))
         pygame.draw.rect(self.screen, (255, 255, 255), pygame.Rect(self.width/2-2, 0, 4, self.height))
         for i in range(2):
-            txt = self.font.render(self.game.players[i].university + ': '+str(self.player_turns[i])+' Turns', 0, (255, 0, 0) if i == 0 else (0, 0, 255))
-            rect = txt.get_rect()
-            rect.topleft = (200 - rect.width/2 + i*400, 50)
-            self.screen.blit(txt, rect)
             self.screen.blit(SpinGame.IMAGES[self.player_positions[i][-1]], pygame.Rect(152 + i*400, 220, 96, 160))
 
         self.screen.blit(self.text, self.text_rect)
@@ -75,6 +71,6 @@ class SpinGame(minigame.Minigame):
             del self.player_positions[player][0]
         positions = self.player_positions[player]
         if positions[0] < positions[1] < positions[2] < positions[3]:
-            self.player_turns[player] += 1
+            self.score[player] += 1
         elif positions[0] > positions[1] > positions[2] > positions[3]:
-            self.player_turns[player] += 1
+            self.score[player] += 1
