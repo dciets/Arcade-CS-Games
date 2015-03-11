@@ -41,25 +41,26 @@ class BlackCat(minigame.Minigame):
     def __init__(self, game):
         minigame.Minigame.__init__(self, game)
         if self.difficulty > 4: self.difficulty = 4
-        self.width, self.height = self.screen.get_size()
+        self.width = game.GAME_WIDTH
+        self.height = game.GAME_HEIGHT
         # Street stuff
         self.street_height = 400
         self.row_height = 100
-        self.street_rect = pygame.Rect(0, 100, self.width, self.street_height)
-        self.street_line = pygame.Rect(0, 100 + self.street_height/2 - 10, self.width, 20)
+        self.street_rect = pygame.Rect(0, 75, self.width, self.street_height)
+        self.street_line = pygame.Rect(0, 75 + self.street_height/2 - 10, self.width, 20)
         self.street_bars = []
         x = 25
         while x < self.width:
-            y1 = 100 + self.street_height/4 - 5
-            y2 = 100 + 3*self.street_height/4 - 5
+            y1 = 75 + self.street_height/4 - 5
+            y2 = 75 + 3*self.street_height/4 - 5
             self.street_bars.append(pygame.Rect(x, y1, 50, 10))
             self.street_bars.append(pygame.Rect(x, y2, 50, 10))
             x += 100
 
         # Cat stuff
         self.cats = [
-            pygame.Rect(self.width/4, 5*self.height/6 + 25, 50, 50),
-            pygame.Rect(3*self.width/4, 5*self.height/6 + 25, 50, 50)
+            pygame.Rect(self.width/4, 5*self.height/6 + 50, 50, 50),
+            pygame.Rect(3*self.width/4, 5*self.height/6 + 50, 50, 50)
         ]
         self.dead = [False, False]
 
@@ -72,7 +73,7 @@ class BlackCat(minigame.Minigame):
             image = car_model['image'] if int(car['lane']/2) else pygame.transform.flip(car_model['image'], True, False)
             self.cars.append({
                 'image': image,
-                'rect': pygame.Rect(car['x'] - car_model['width']/2, 125 + car['lane']*100, car_model['width'], car_model['height']),
+                'rect': pygame.Rect(car['x'] - car_model['width']/2, 100 + car['lane']*100, car_model['width'], car_model['height']),
                 'lane': car['lane'],
                 'speed': car_model['speed']
             })
@@ -108,10 +109,10 @@ class BlackCat(minigame.Minigame):
             if event.type == pygame.KEYDOWN:
                 for i in range(2):
                     if event.key == input_map.PLAYERS_MAPPING[i][input_map.UP] and not self.dead[i]:
-                        if self.cats[i][1] > 100:
+                        if self.cats[i][1] > 25:
                             self.cats[i][1] -= self.row_height
                     elif event.key == input_map.PLAYERS_MAPPING[i][input_map.DOWN] and not self.dead[i]:
-                        if self.cats[i][1] < 500:
+                        if self.cats[i][1] < 475:
                             self.cats[i][1] += self.row_height
 
         for car in self.cars:

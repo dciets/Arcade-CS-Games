@@ -62,8 +62,6 @@ class MirrorsMinigame(minigame.Minigame):
             self.results[0] = self.score[0] >= self.score[1]
             self.results[1] = self.score[1] >= self.score[0]
 
-        self.gfx.print_msg(str(self.score[0]), (self.screen.get_width() / 2 - 200, self.screen.get_height() / 2), color=(255, 0, 0))
-        self.gfx.print_msg(str(self.score[1]), (self.screen.get_width() / 2 + 200, self.screen.get_height() / 2), color=(0, 0, 255))
         self.base.display(self.screen)
 
         for i, m in enumerate(self.mirrors):

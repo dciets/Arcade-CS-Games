@@ -17,7 +17,7 @@ class PersoLeprechaun(Perso):
         Perso.update(self, timeElapsed)
 
         self.keepDirTime += timeElapsed
-        print self.keepDirTime
+
         if self.keepDirTime >= self.KEEP_DIR_TIME:
             self.keepDirTime = 0
             self.dir = random.randint(0,3)
@@ -31,5 +31,5 @@ class PersoLeprechaun(Perso):
         elif self.dir == 3:
             self.move("left")
 
-        if self.difficulty >= self.TELEPORT and random.randint(0,1000) < 5:
-            self.pos = [random.randint(0,800), random.randint(200,600)]
+        if self.difficulty >= self.TELEPORT and random.randint(0, 1000) < 5:
+            self.pos = [random.randint(25, 725), random.randint(200, 525)]

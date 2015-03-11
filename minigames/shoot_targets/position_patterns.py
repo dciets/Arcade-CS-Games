@@ -33,8 +33,8 @@ def ellipse_pattern(game):
     n = 20
     a = math.pi * 2 / n
     r = 0
-    w = random.randrange(width * 0.15, width * 0.4)
-    h = random.randrange(height * 0.15, height * 0.4)
+    w = random.randrange(int(width * 0.15), int(width * 0.4))
+    h = random.randrange(int(height * 0.15), int(height * 0.4))
 
     for i in range(n):
         x, y = cx + math.cos(r) * w, cy + math.sin(r) * h

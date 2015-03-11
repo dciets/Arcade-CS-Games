@@ -2,19 +2,20 @@ import pygame
 from pygame.locals import *
 from datetime import datetime, timedelta
 import random
+from game_states.overlay_state import OverlayedState
 import minigame
 import endgame
+import menu
 import gfx
 
-HEART_SPRITE = pygame.image.load('res/img/heart.png')
-
-class Splash:
+class Splash(OverlayedState):
     MINIGAMES = []
     _duration = 3
 
     '''Display the splash screen with some info in between minigames'''
     def __init__(self, game):
-        self.game = game
+        OverlayedState.__init__(self, game)
+
         self.started_at = datetime.now()
         self.screen = self.game.screen
         self.scrrct = self.screen.get_rect()
@@ -33,23 +34,11 @@ class Splash:
         if any(p.lives <= 0 for p in self.game.players) and not self.game.second_turn:
             self.game.state = endgame.EndGame(self.game)
 
-        self.screen.fill((0,0,0))
+        self.game.border.fill((0,0,0))
+        self.display_hud()
 
         # Display minigame name
-        self.game.gfx.print_msg(self.game.minigame.name, midtop=(self.scrrct.centerx, 300), color=gfx.WHITE)
-
-        # Display players lives
-        self.game.gfx.print_msg(self.game.players[0].university, topleft=(30, 30), color=gfx.RED)
-        self.game.gfx.print_msg(self.game.players[1].university, topright=(self.scrrct.w-30, 30), color=gfx.BLUE)
-
-        heart_rect = HEART_SPRITE.get_rect()
-        heart_rect.topleft = (30, 70)
-        for i in range(self.game.players[0].lives):
-            self.game.screen.blit(HEART_SPRITE, heart_rect.move(i*(heart_rect.w+10), 0))
-
-        heart_rect.topright = (self.game.screen.get_rect().w - 30, 70)
-        for i in range(self.game.players[1].lives):
-            self.game.screen.blit(HEART_SPRITE, heart_rect.move(-i*(heart_rect.w+10), 0))
+        self.game.gfx.print_msg(self.game.minigame.name, midtop=(self.scrrct.centerx, self.game.GAME_HEIGHT / 2), color=gfx.WHITE)
 
         # Display who's playing next for single player minigame
         if self.game.minigame.is_singleplayer():
