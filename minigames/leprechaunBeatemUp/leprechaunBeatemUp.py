@@ -1,4 +1,3 @@
-from minigames import minigame
 from minigames import multiplayer
 from entities import PersoPlayer
 from entities import PersoLeprechaun
