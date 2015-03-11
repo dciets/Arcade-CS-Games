@@ -12,8 +12,8 @@ class BlackCat(minigame.Minigame):
     CAR = 0
     TRUCK = 1
     CAR_MODELS = [
-        {'image': pygame.image.load('./res/img/blackcat/car_blue.png'), 'width': 80, 'height': 40, 'speed': 2},
-        {'image': pygame.image.load('./res/img/blackcat/truck.png'), 'width': 160, 'height': 53, 'speed': 1}
+        {'image': pygame.image.load('./res/img/blackcat/car_blue.png'), 'width': 80, 'height': 40, 'speed': 16},
+        {'image': pygame.image.load('./res/img/blackcat/truck.png'), 'width': 160, 'height': 53, 'speed': 8}
     ]
     CAR_PATTERNS = [
         [  # Difficulty 0

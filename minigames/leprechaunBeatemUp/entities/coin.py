@@ -2,14 +2,15 @@ import pygame
 
 class Coin:
     def __init__(self, pos):
+        self.SPEED = 5
         self.pos = [pos[0], pos[1]]
         self.moveBy = 100
         self.image = pygame.image.load("./res/img/leprechaunBeatemUp/Coin.png").convert_alpha()
         self.rect = self.image.get_rect()
 
     def update(self):
-        self.pos[1] -= 1
-        self.moveBy -= 1
+        self.pos[1] -= self.SPEED
+        self.moveBy -= self.SPEED
 
     def draw(self, screen):
         self.rect.x = self.pos[0]

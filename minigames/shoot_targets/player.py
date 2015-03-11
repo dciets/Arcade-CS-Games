@@ -5,7 +5,7 @@ from explosion_sprite import ExplosionSprite
 
 class Player:
     damp = 10.0
-    speed = 20
+    speed = 40
 
     player_images = [
         pygame.image.load('res/img/shoot_targets/player1.png'),

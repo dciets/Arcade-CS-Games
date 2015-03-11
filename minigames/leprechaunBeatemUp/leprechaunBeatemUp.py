@@ -10,11 +10,6 @@ class LeprechaunBeatemUp(multiplayer.Minigame):
     max_duration = 10000
 
     def init(self):
-        self.WAIT_TIME = 10
-        self.DRAW_SPEED = 30
-
-        self.width, self.height = self.screen.get_size()
-
         self.rainbow = pygame.image.load("./res/img/leprechaunBeatemUp/Background.png").convert()
         self.coin = pygame.image.load("./res/img/leprechaunBeatemUp/Coin.png").convert_alpha()
 
@@ -23,21 +18,13 @@ class LeprechaunBeatemUp(multiplayer.Minigame):
         self.enemy = PersoLeprechaun(400, 300, "./res/img/leprechaunBeatemUp/Leprechaun.png", self.difficulty, self.players)
         self.coins = []
         self.currentTime = pygame.time.get_ticks()/1000.0
-        self.drawTime = pygame.time.get_ticks()/1000.0
-
-    def run(self):
-        self.tick()
-        pygame.time.wait(self.WAIT_TIME)
 
     def tick(self):
-        timeElapsed = pygame.time.get_ticks()/1000.0 - self.currentTime
-        self.currentTime = pygame.time.get_ticks()/1000.0
-
         self.events()
-        self.update(timeElapsed)
-        if pygame.time.get_ticks() - self.drawTime >= self.DRAW_SPEED:
-            self.draw()
-            self.drawTime = pygame.time.get_ticks()
+        self.update(pygame.time.get_ticks()/1000.0 - self.currentTime)
+        self.draw()
+
+        self.currentTime = pygame.time.get_ticks()/1000.0
 
     def get_results(self):
         if self.players[0].money > self.players[1].money:
@@ -74,12 +61,6 @@ class LeprechaunBeatemUp(multiplayer.Minigame):
         self.screen.blit(self.coin, (710,25))
         self.gfx.print_msg(str(self.players[0].money), (30, 30))
         self.gfx.print_msg(str(self.players[1].money), (750, 30))
-
-        elapsed_ms = pygame.time.get_ticks() - self.started_at
-        duration = self.get_duration()
-
-        sec_left = str(int((duration - elapsed_ms)/1000))
-        self.gfx.print_msg(sec_left, (30, 550))
 
     def events(self):
         pygame.event.get()

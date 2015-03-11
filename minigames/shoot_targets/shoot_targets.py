@@ -7,7 +7,7 @@ from position_patterns import generate_targets
 
 class ShootTargets(minigame.Minigame):
 
-    name = 'Shoot targets'
+    name = 'Shoot the targets!'
     game_type = minigame.MULTIPLAYER
 
     def __init__(self, game):
