@@ -32,7 +32,7 @@ class Splash(OverlayedState):
             self.game.state = minigame.Minigame(self.game)
 
         if any(p.lives <= 0 for p in self.game.players) and not self.game.second_turn:
-            self.game.state = menu.Menu(self.game, True)
+            self.game.state = endgame.EndGame(self.game)
 
         self.game.border.fill((0,0,0))
         self.display_hud()

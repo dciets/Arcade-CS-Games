@@ -1,4 +1,4 @@
-from itertools import cycle
+from itertools import cycle, islice, tee, dropwhile
 import pygame
 from pygame.locals import *
 import random
@@ -12,42 +12,35 @@ class Menu:
     Display the initial menu waiting for play to get ready
     and pick universities.
     '''
-    def __init__(self, game, should_tally_scores=False):
+    def __init__(self, game):
         self.game = game
         self.font = pygame.font.Font('res/font/ps2p.ttf', 14)
         self.schools_scores = json.load(open('./res/schools_scores.json', 'r'))
-        self.selectors = [
-            cycle(sorted(self.schools_scores.keys(), key=lambda k: random.random())),
-            cycle(sorted(self.schools_scores.keys(), key=lambda k: random.random()))
+        self.schools = cycle(list(enumerate(sorted(self.schools_scores.keys(), key=lambda k: random.random()))))
+        s1, s2 = tee(self.schools)
+        [s1.next() for i in range(random.randint(0, len(self.schools_scores.keys())))]
+        [s2.next() for i in range(random.randint(0, len(self.schools_scores.keys())))]
+        self.selectors = [s1, s2]
+        self.selections = [
+            self.selectors[0].next(),
+            self.selectors[1].next()
         ]
-        self.selections = [self.selectors[0].next(), self.selectors[0].next()]
+        self.players_is_ready = [False, False]
 
         # Gfx
         self.gfx_header = pygame.image.load('./res/img/ui/header.png').convert_alpha()
         self.gfx_grid = pygame.image.load('./res/img/ui/menu.png').convert_alpha()
         self.gfx_vs = pygame.image.load('./res/img/ui/vs.png').convert_alpha()
-        self.gfx_selections = [
-            pygame.image.load('./res/img/ui/' + re.sub(r'\W+', '', self.selections[0].lower()) + '.png').convert_alpha(),
-            pygame.image.load('./res/img/ui/' + re.sub(r'\W+', '', self.selections[1].lower()) + '.png').convert_alpha()
+        self.gfx_selections = [self.selections[0][1], self.selections[1][1]]
+        self.gfx_selectors = [
+            pygame.image.load('./res/img/ui/p1_selector.png').convert_alpha(),
+            pygame.image.load('./res/img/ui/p2_selector.png').convert_alpha()
         ]
 
         # Text
         self.txt_repo = pygame.font.Font('res/font/ps2p.ttf', 11).render("github.com/dciets/Arcade-CS-Games-2015", 0, (255, 255, 255))
-
-        # Scores should be tallied
-        if should_tally_scores:
-            self.tally_scores()
-
-        self.player1_txt = self.font.render("<Choose your school>", 0, (255, 0, 0))
-        self.player1_label = self.player1_txt.get_rect()
-        self.player1_label.topleft = (200 - self.player1_label.width/2, 20)
-
-        self.player2_txt = self.font.render("<Choose your school>", 0, (0, 0, 255))
-        self.player2_label = self.player2_txt.get_rect()
-        self.player2_label.topleft = (game.GAME_HEIGHT - self.player2_label.width/2, 20)
-
-        self.players_selection = [[0, 0], [0, 0]]
-        self.selected = [False, False]
+        self.txt_ready = [pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (255, 0, 0)), pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (0, 0, 255))]
+        self.txt_not_ready = [pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (0, 0, 0)), pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (0, 0, 0))]
 
         ''' BLITTING '''
         # Background
@@ -55,92 +48,81 @@ class Menu:
         self.game.border.blit(self.gfx_header, (-5, 0))
 
         # Player infos
-        self.game.border.blit(self.gfx_selections[0], self.gfx_selections[0].get_rect(topleft=(30, 210)))
-        self.game.border.blit(self.gfx_selections[1], self.gfx_selections[1].get_rect(topleft=(260, 210)))
+        self.update_selection(0)
+        self.update_selection(1)
         self.game.border.blit(self.gfx_vs, self.gfx_vs.get_rect(topleft=(125, 200)))
-
-        # Player list
-        schools = cycle(sorted(self.schools_scores.keys(), key=lambda k: random.random()))
-        for i in range(0, len(self.schools_scores.keys())):
-            start_x = self.game.SCREEN_WIDTH - 24
-            start_y = self.game.SCREEN_HEIGHT - 34
-            gfx_school = pygame.image.load('./res/img/ui/' + re.sub(r'\W+', '', schools.next().lower()) + '.png').convert_alpha()
-            self.game.border.blit(gfx_school, gfx_school.get_rect(bottomright=(start_x - (i % 4) * 99, start_y - (i / 4) * 99)))
-        self.game.border.blit(self.gfx_grid, self.gfx_grid.get_rect(bottomright=(self.game.SCREEN_WIDTH - 5, self.game.SCREEN_HEIGHT - 15)))
 
         # Link to repository
         self.game.border.blit(self.txt_repo, self.txt_repo.get_rect(bottomright=(self.game.SCREEN_WIDTH - 5, self.game.SCREEN_HEIGHT - 2)))
 
+    def show_player_list(self):
+        # Position school iterator
+        while self.schools.next()[0] != len(self.schools_scores.keys()) - 1: pass
+
+        # Player list
+        for i in range(len(self.schools_scores.keys())):
+            start_x = self.game.SCREEN_WIDTH - 410
+            start_y = self.game.SCREEN_HEIGHT - 522
+            gfx_school = pygame.image.load('./res/img/ui/' + re.sub(r'\W+', '', self.schools.next()[1].lower()) + '.png').convert_alpha()
+            self.game.border.blit(gfx_school, gfx_school.get_rect(topleft=(start_x + (i % 4) * 99, start_y + (i / 4) * 100)))
+        self.game.border.blit(self.gfx_grid, self.gfx_grid.get_rect(bottomright=(self.game.SCREEN_WIDTH - 5, self.game.SCREEN_HEIGHT - 15)))
+
+    def update_selection(self, idx):
+        txt_score = pygame.font.Font('res/font/ps2p.ttf', 13).render(str(self.schools_scores[self.selections[idx][1]]), 0, (255, 255, 255))
+        txt_score_hide = pygame.font.Font('res/font/ps2p.ttf', 13).render("000000", 0, (0, 0, 0))
+        start_x = self.game.SCREEN_WIDTH - 410
+        start_y = self.game.SCREEN_HEIGHT - 522
+
+        self.show_player_list()
+
+        self.gfx_selections[idx] = pygame.image.load('./res/img/ui/' + re.sub(r'\W+', '', self.selections[idx][1].lower()) + '.png').convert_alpha()
+        self.game.border.blit(self.gfx_selections[idx], self.gfx_selections[idx].get_rect(topleft=(idx * 230 + 30, 210)))
+        pygame.draw.rect(self.game.border, (0, 0, 0), txt_score_hide.get_rect(midtop=(idx * 230 + 70, 300)))
+        self.game.border.blit(txt_score, txt_score.get_rect(midtop=(idx * 230 + 70, 300)))
+        self.game.border.blit(self.gfx_selectors[0], self.gfx_selectors[0].get_rect(topleft=(start_x + (self.selections[0][0] % 4) * 99, start_y + (self.selections[0][0] / 4) * 100)))
+        self.game.border.blit(self.gfx_selectors[1], self.gfx_selectors[1].get_rect(topleft=(start_x + (self.selections[1][0] % 4) * 99, start_y + (self.selections[1][0] / 4) * 100)))
+
+
     def run(self):
-        pass
-        # r = pygame.Rect(self.players_selection[0][0]*175 + 10, 65 + self.players_selection[0][1]*100, 180, 80)
-        # pygame.draw.rect(self.game.screen, (255, 0, 0), r, not self.selected[0])
-        # r = pygame.Rect(self.players_selection[1][0]*175 + 20, 75 + self.players_selection[1][1]*100, 160, 60)
-        # pygame.draw.rect(self.game.screen, (0, 0, 255), r, not self.selected[1])
-        #
-        # if self.selected[0]:
-        #     school = self.schools_scores.keys()[self.players_selection[0][0]*5 + self.players_selection[0][1]]
-        #     school_name = self.font.render(school, 0, (255, 0, 0))
-        #     self.game.screen.blit(school_name, Rect(self.player1_label.x + self.player1_label.width/2 - school_name.get_rect().width/2, self.player1_label.y, self.player1_label.width, self.player1_label.height))
-        # else:
-        #     self.game.screen.blit(self.player1_txt, self.player1_label)
-        # self.game.screen.blit(self.vs_txt, self.vs_label)
-        # if self.selected[1]:
-        #     school = self.schools_scores.keys()[self.players_selection[1][0]*5 + self.players_selection[1][1]]
-        #     school_name = self.font.render(school, 0, (0, 0, 255))
-        #     self.game.screen.blit(school_name, Rect(self.player2_label.x + self.player2_label.width/2 - school_name.get_rect().width/2, self.player2_label.y, self.player2_label.width, self.player2_label.height))
-        # else:
-        #     self.game.screen.blit(self.player2_txt, self.player2_label)
-        #
-        # i = 0
-        # for key in self.schools_scores.keys():
-        #     school_name = self.font.render(key, 0, (255, 255, 255))
-        #     school_score = self.font.render(str(self.schools_scores[key]), 0, (255, 255, 255))
-        #     school_rect = school_name.get_rect()
-        #     school_rect.topleft = (int(i/5)*175 + 100, 100 + (i % 5)*100)
-        #     school_rect.x -= school_rect.width/2
-        #     school_rect.y -= school_rect.height/2
-        #     self.game.screen.blit(school_name, school_rect)
-        #     self.game.screen.blit(school_score, Rect(school_rect.x + school_rect.width/2 - school_score.get_rect().width/2, school_rect.y+20, school_rect.width, school_rect.height))
-        #     i += 1
-        #
-        # for event in pygame.event.get():
-        #     if event.type == pygame.KEYDOWN:
-        #         for i in range(2):
-        #             if not self.selected[i]:
-        #                 if event.key == input_map.PLAYERS_MAPPING[i][input_map.DOWN]:
-        #                     self.players_selection[i][1] += 1
-        #                     if self.players_selection[i][1] > 4:
-        #                         self.players_selection[i][1] = 0
-        #                 elif event.key == input_map.PLAYERS_MAPPING[i][input_map.UP]:
-        #                     self.players_selection[i][1] -= 1
-        #                     if self.players_selection[i][1] < 0:
-        #                         self.players_selection[i][1] = 4
-        #                 elif event.key == input_map.PLAYERS_MAPPING[i][input_map.RIGHT]:
-        #                     self.players_selection[i][0] += 1
-        #                     if self.players_selection[i][0] > 3:
-        #                         self.players_selection[i][0] = 0
-        #                 elif event.key == input_map.PLAYERS_MAPPING[i][input_map.LEFT]:
-        #                     self.players_selection[i][0] -= 1
-        #                     if self.players_selection[i][0] < 0:
-        #                         self.players_selection[i][0] = 3
-        #             if event.key == input_map.PLAYERS_MAPPING[i][input_map.ACTION]:
-        #                 self.selected[i] = not self.selected[i]
-        #                 if self.selected[0] and self.selected[1]:
-        #                     self.start_game()
+        if self.players_is_ready[0] and self.players_is_ready[1]:
+            pygame.time.wait(1000)
+            self.start_game()
 
-    def tally_scores(self):
-        print "THE SCORES!"
-        print [[self.game.players[0].wins, 3 - self.game.players[0].lives], [self.game.players[1].wins, 3 - self.game.players[1].lives]]
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                for i in range(2):
+                    if event.key == input_map.PLAYERS_MAPPING[i][input_map.DOWN]:
+                        while self.selectors[i].next()[0] != (self.selections[i][0] + 3) % len(self.schools_scores.keys()): pass
+                        self.selections[i] = self.selectors[i].next()
+                        self.update_selection(i)
+                    elif event.key == input_map.PLAYERS_MAPPING[i][input_map.UP]:
+                        while self.selectors[i].next()[0] != (self.selections[i][0] - 5) % len(self.schools_scores.keys()): pass
+                        self.selections[i] = self.selectors[i].next()
+                        self.update_selection(i)
+                    elif event.key == input_map.PLAYERS_MAPPING[i][input_map.RIGHT]:
+                        while self.selectors[i].next()[0] != (((self.selections[i][0] - (self.selections[i][0] / 4) * 4 + 1) % 4 - 1) + (self.selections[i][0] / 4) * 4) % len(self.schools_scores.keys()): pass
+                        self.selections[i] = self.selectors[i].next()
+                        self.update_selection(i)
+                    elif event.key == input_map.PLAYERS_MAPPING[i][input_map.LEFT]:
+                        # Screw maths and iterators for this one
+                        col = self.selections[i][0] - (self.selections[i][0] / 4) * 4
+                        if col == 0:
+                            while self.selectors[i].next()[0] != self.selections[i][0] + 2: pass
+                        else:
+                            while self.selectors[i].next()[0] != (self.selections[i][0] - 2) % len(self.schools_scores.keys()): pass
+                        self.selections[i] = self.selectors[i].next()
+                        self.update_selection(i)
 
-        for p in self.game.players:
-            p.lives = 3
-            p.wins = 0
+                    if event.key == input_map.PLAYERS_MAPPING[i][input_map.ACTION]:
+                        self.players_is_ready[i] = not self.players_is_ready[i]
+
+                        if self.players_is_ready[i]:
+                            self.game.border.blit(self.txt_ready[i], self.txt_ready[i].get_rect(topleft=(i * 230 + 40, 190)))
+                        else:
+                            self.game.border.blit(self.txt_not_ready[i], self.txt_not_ready[i].get_rect(topleft=(i * 230 + 40, 190)))
 
     def start_game(self):
-        school_player1 = self.schools_scores.keys()[self.players_selection[0][0]*5 + self.players_selection[0][1]]
-        school_player2 = self.schools_scores.keys()[self.players_selection[1][0]*5 + self.players_selection[1][1]]
-        self.game.players[0].university = school_player1
-        self.game.players[1].university = school_player2
+        self.game.players[0].university = self.selections[0][1]
+        self.game.players[1].university = self.selections[1][1]
         self.game.state = splash.Splash(self.game)
 
