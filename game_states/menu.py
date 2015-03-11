@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 import random
 import re
+import operator
 import splash
 import json
 import input_map
@@ -52,6 +53,9 @@ class Menu:
         self.update_selection(1)
         self.game.border.blit(self.gfx_vs, self.gfx_vs.get_rect(topleft=(125, 200)))
 
+        # High scores
+        self.show_top10()
+
         # Link to repository
         self.game.border.blit(self.txt_repo, self.txt_repo.get_rect(bottomright=(self.game.SCREEN_WIDTH - 5, self.game.SCREEN_HEIGHT - 2)))
 
@@ -82,6 +86,12 @@ class Menu:
         self.game.border.blit(self.gfx_selectors[0], self.gfx_selectors[0].get_rect(topleft=(start_x + (self.selections[0][0] % 4) * 99, start_y + (self.selections[0][0] / 4) * 100)))
         self.game.border.blit(self.gfx_selectors[1], self.gfx_selectors[1].get_rect(topleft=(start_x + (self.selections[1][0] % 4) * 99, start_y + (self.selections[1][0] / 4) * 100)))
 
+    def show_top10(self):
+        i = 1
+        for school in list(sorted(self.schools_scores.iteritems(), key=operator.itemgetter(1), reverse=True)[:10]):
+            entry = pygame.font.Font('res/font/ps2p.ttf', 12).render("#" + str(i) + " " + str(school[0]) + " - " + str(school[1]), 0, (255, 255, 255))
+            self.game.border.blit(entry, entry.get_rect(topleft=(50, 350 + (i - 1) * 20)))
+            i += 1
 
     def run(self):
         if self.players_is_ready[0] and self.players_is_ready[1]:
