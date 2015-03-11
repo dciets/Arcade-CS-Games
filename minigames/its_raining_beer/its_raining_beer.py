@@ -7,7 +7,7 @@ import input_map
 
 class ItsRainingBeer(multiplayer.Minigame):
     name = 'Drink beer!'
-    max_duration = 7000
+    max_duration = 10000
     MAX_BEERS = 10
 
     def init(self):
