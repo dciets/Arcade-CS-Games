@@ -7,3 +7,4 @@ from cutlery_fall.cutlery_fall import CutleryFall
 from its_raining_beer.its_raining_beer import ItsRainingBeer
 from crackgame import CrackGame
 from chiotteclean import ChiotteGame
+from ultimate_pong.ultimate_pong import UltimatePong
