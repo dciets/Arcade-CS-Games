@@ -1,23 +1,33 @@
 from datetime import datetime, timedelta
 import pygame
+from pygame.constants import USEREVENT
+from pygame.time import Clock
+from game_states.overlay_state import OverlayedState
 import splash
 
-class Minigame:
+class Minigame(OverlayedState):
     '''Play a minigame!'''
     def __init__(self, game):
+        OverlayedState.__init__(self, game)
+
         self.game = game
         self.minigame = self.game.minigame(self.game)
+        self.elapsed_ms = 0
         self.duration = self.minigame.get_duration()
-        self.started_at = pygame.time.get_ticks()
-
+        self.timer = Clock()
         self.minigame.init()
 
         print('In minigame!')
 
     def run(self):
+        self.game.border.fill((0,0,0))
         self.minigame.run()
+        self.display_hud()
+        if len(self.minigame.score) == 2: self.minigame.display_score_markers()
+        self.minigame.display_overlay()
+        self.elapsed_ms += self.timer.tick(self.game.FPS)
 
-        if (self.started_at + self.duration) < pygame.time.get_ticks():
+        if int(self.minigame.sec_left) <= 0:
             self.game_done()
 
     def game_done(self):
@@ -25,6 +35,9 @@ class Minigame:
         for player, result in zip(self.game.players, results):
             if not result:
                 player.lives -= 1
+            else:
+                player.wins += 1
+
         self.game.state = splash.Splash(self.game)
 
         if self.game.minigame.is_singleplayer():
