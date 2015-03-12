@@ -9,7 +9,7 @@ class EndGame:
     '''Display end game score'''
     def __init__(self, game):
         self.game = game
-        self.font = pygame.font.Font('res/font/ps2p.ttf', 26)
+        self.font = pygame.font.Font('res/font/ps2p.ttf', 22)
         self.started_at = datetime.now()
         self.winner = -1
         f = open('./res/schools_scores.json', 'r')
