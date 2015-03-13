@@ -101,19 +101,19 @@ class Menu:
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
                 for i in range(2):
-                    if event.key == input_map.PLAYERS_MAPPING[i][input_map.DOWN]:
+                    if event.key == input_map.PLAYERS_MAPPING[i][input_map.DOWN] and not self.players_is_ready[i]:
                         while self.selectors[i].next()[0] != (self.selections[i][0] + 3) % len(self.schools_scores.keys()): pass
                         self.selections[i] = self.selectors[i].next()
                         self.update_selection(i)
-                    elif event.key == input_map.PLAYERS_MAPPING[i][input_map.UP]:
+                    elif event.key == input_map.PLAYERS_MAPPING[i][input_map.UP] and not self.players_is_ready[i]:
                         while self.selectors[i].next()[0] != (self.selections[i][0] - 5) % len(self.schools_scores.keys()): pass
                         self.selections[i] = self.selectors[i].next()
                         self.update_selection(i)
-                    elif event.key == input_map.PLAYERS_MAPPING[i][input_map.RIGHT]:
+                    elif event.key == input_map.PLAYERS_MAPPING[i][input_map.RIGHT] and not self.players_is_ready[i]:
                         while self.selectors[i].next()[0] != (((self.selections[i][0] - (self.selections[i][0] / 4) * 4 + 1) % 4 - 1) + (self.selections[i][0] / 4) * 4) % len(self.schools_scores.keys()): pass
                         self.selections[i] = self.selectors[i].next()
                         self.update_selection(i)
-                    elif event.key == input_map.PLAYERS_MAPPING[i][input_map.LEFT]:
+                    elif event.key == input_map.PLAYERS_MAPPING[i][input_map.LEFT] and not self.players_is_ready[i]:
                         # Screw maths and iterators for this one
                         col = self.selections[i][0] - (self.selections[i][0] / 4) * 4
                         if col == 0:
