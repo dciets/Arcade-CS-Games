@@ -7,4 +7,4 @@
 # from its_raining_beer.its_raining_beer import ItsRainingBeer
 # from crackgame import CrackGame
 # from chiotteclean import ChiotteGame
-from ladders.minigame import LaddersMinigame
+from ladders import LaddersMinigame
