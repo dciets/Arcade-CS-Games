@@ -59,6 +59,7 @@ class MirrorsMinigame(minigame.Minigame):
 
         for player in self.base.get_points(self.mirrors):
             self.score[player] += 1
+
             self.results[0] = self.score[0] >= self.score[1]
             self.results[1] = self.score[1] >= self.score[0]
 
