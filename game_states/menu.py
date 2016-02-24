@@ -39,7 +39,7 @@ class Menu:
         ]
 
         # Text
-        self.txt_repo = pygame.font.Font('res/font/ps2p.ttf', 11).render("github.com/dciets/Arcade-CS-Games-2015", 0, (255, 255, 255))
+        self.txt_repo = pygame.font.Font('res/font/ps2p.ttf', 11).render("github.com/dciets/Arcade-CS-Games", 0, (255, 255, 255))
         self.txt_ready = [pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (255, 0, 0)), pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (0, 0, 255))]
         self.txt_not_ready = [pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (0, 0, 0)), pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (0, 0, 0))]
 
