@@ -7,7 +7,7 @@ class Lockpick(multiplayer.Minigame):
 	duration = 5
 
 	# CONFIG
-	SPEED = 20
+	SPEED = 10
 	HANDLE_SIZE = [20, 100]
 	width, height = 0, 0
 
@@ -17,7 +17,7 @@ class Lockpick(multiplayer.Minigame):
 	positions = [0, 0]
 
 	# SPRITES
-	handles = []
+	wheel = pygame.image.load("./res/img/lockpick/wheel.png")
 
 	def __init__(self, game):
 		multiplayer.Minigame.__init__(self, game)
@@ -28,11 +28,11 @@ class Lockpick(multiplayer.Minigame):
 		self.positions = [0, 0]
 		self.velocities = [0, 0]
 
-		for i in range(2):
-			self.handles.append( \
-				pygame.Rect(self.width * (0.5*i + 0.25), self.height * 0.5, \
-				self.HANDLE_SIZE[0], self.HANDLE_SIZE[1]) \
-			)
+		#for i in range(2):
+		#	self.handles.append( \
+		#		pygame.Rect(self.width * (0.5*i + 0.25), self.height * 0.5, \
+		#		self.HANDLE_SIZE[0], self.HANDLE_SIZE[1]) \
+		#	)
 
 	def tick(self):
 		self.update()
@@ -63,8 +63,15 @@ class Lockpick(multiplayer.Minigame):
 		print "Player positions: [" + str(self.positions[0]) + ", " + str(self.positions[1]) + "]"
 		self.screen.fill((0, 0, 0))
 
-		for handle in self.handles:
-			pygame.draw.rect(self.screen, (255, 255, 255), handle)
+		for i in range(2):
+			playerWheel = rot_center(self.wheel, self.positions[i])
+			self.screen.blit(\
+				playerWheel, \
+				[ \
+					self.width * (0.5*i + 0.25) - self.wheel.get_width()/2, \
+					self.height * 0.5 - self.wheel.get_height()/2 \
+				] \
+			)
 
 	def open(self, player):
 		print "player " + str(player) + " opens the safe"
@@ -76,3 +83,12 @@ class Lockpick(multiplayer.Minigame):
 			return [False, True]
 		else:
 			return [True, True]
+
+def rot_center(image, angle):
+    """rotate an image while keeping its center and size http://pygame.org/wiki/RotateCenter"""
+    orig_rect = image.get_rect()
+    rot_image = pygame.transform.rotate(image, angle)
+    rot_rect = orig_rect.copy()
+    rot_rect.center = rot_image.get_rect().center
+    rot_image = rot_image.subsurface(rot_rect).copy()
+    return rot_image
