@@ -68,7 +68,7 @@ class CrackGame(minigame.Minigame):
                 pygame.draw.aaline(self.screen, (0, 0, 0), (p + crack - 10, self.sidewalk_y+self.sidewalk_height + i*2*self.sidewalk_height), (p + crack - 10, self.sidewalk_y+self.sidewalk_height + i*2*self.sidewalk_height + self.sidewalk_height/5))
                 p += crack
                 if not self.jumping[i]:
-                    if self.positions[i][0] - img.get_rect().width/4 < p < self.positions[i][0] + img.get_rect().width/4:
+                    if (self.positions[i][0] < self.width) and (self.positions[i][0] - img.get_rect().width/4 < p < self.positions[i][0] + img.get_rect().width/4):
                         self.dead[i] = True
 
             if not self.dead[i]:
