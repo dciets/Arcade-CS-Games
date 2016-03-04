@@ -5,34 +5,41 @@ from random import randint
 import math
 
 class Lockpick(multiplayer.Minigame):
-	name = "Crack the code!"
-	max_duration = 8000
+	name = "Open the lock!"
 
 	# CONFIG
+	FINISHED = {'NOT': -1, 'PASS': 0, 'FAIL': 1}
 	BASE_SPEED = 5
-	INCREMENT_SPEED = 5
+	INCREMENT_SPEED = 4
 	HANDLE_SIZE = (20, 100)
-	NEAR_SPOT = 80
 	SWEET_SPOT = 20
 	FAR_COLOR = (200, 0, 0)
-	NEAR_COLOR = (255, 255, 0)
 	SWEET_COLOR = (0, 180, 0)
 	OPEN_ANIM_DURATION = 5
 
 	# SPRITES
 	wheel = pygame.image.load("./res/img/lockpick/wheel.png")
+	passMark = pygame.image.load("./res/img/lockpick/pass.png")
+	failMark = pygame.image.load("./res/img/lockpick/fail.png")
 
 	def __init__(self, game):
 		multiplayer.Minigame.__init__(self, game)
 		self.width = game.GAME_WIDTH
 		self.height = game.GAME_HEIGHT
 
-		# Initialize game state
+		# Initialize difficulty
+		self.max_duration = 8000 - self.difficulty * 500
 		self.speed = self.BASE_SPEED + self.INCREMENT_SPEED * self.difficulty
+
+		# Initialize game state
 		self.score = [0, 0]
+		self.finished = [self.FINISHED['NOT'], self.FINISHED['NOT']]
 		self.positions = [0, 0]
 		self.velocities = [0, 0]
 		self.target = [randint(0, 359), randint(0, 359)]
+
+
+		print self.target
 
 		# Initialize anim state
 		self.open_anim_position = [-1, -1]
@@ -44,26 +51,26 @@ class Lockpick(multiplayer.Minigame):
 	def update(self):
 		# Listen for inputs
 		for event in pygame.event.get():
-			if event.type == KEYDOWN:
-				for i in range(2):
-					if event.key == PLAYERS_MAPPING[i][LEFT]:
-						self.velocities[i] = -self.speed
-					elif event.key == PLAYERS_MAPPING[i][RIGHT]:
-						self.velocities[i] = self.speed
-					elif event.key == PLAYERS_MAPPING[i][ACTION]:
-						self.openSafe(i)
-			elif event.type == KEYUP:
-				for i in range(2):
-					if (event.key == PLAYERS_MAPPING[i][LEFT]) or \
-						(event.key == PLAYERS_MAPPING[i][RIGHT]):
-						self.velocities[i] = 0
+			for i in range(2):
+				if (self.finished[i] == self.FINISHED['NOT']):
+					if event.type == KEYDOWN:
+						if event.key == PLAYERS_MAPPING[i][LEFT]:
+							self.velocities[i] = -self.speed
+						elif event.key == PLAYERS_MAPPING[i][RIGHT]:
+							self.velocities[i] = self.speed
+						elif event.key == PLAYERS_MAPPING[i][ACTION]:
+							self.openSafe(i)
 
-		# Apply velocities
+					elif event.type == KEYUP:
+						if (event.key == PLAYERS_MAPPING[i][LEFT]) or \
+							(event.key == PLAYERS_MAPPING[i][RIGHT]):
+							self.velocities[i] = 0
+
 		for i in range(2):
+			# Apply velocities
 			self.positions[i] = (self.positions[i] + self.velocities[i]) % 360
 
-		# Update anim positions
-		for i in range(2):
+			# Update anim positions
 			if self.open_anim_position[i] >= 0:
 				self.open_anim_position[i] += 1
 			if self.open_anim_position[i] > self.OPEN_ANIM_DURATION:
@@ -76,18 +83,9 @@ class Lockpick(multiplayer.Minigame):
 			playerWCenter = self.width * (0.5*i + 0.25)
 			playerHCenter = self.height * 0.5
 
-			# Draw the arrow
-			arrowPoints = self.get_arrow_points(i)
-
-			pygame.draw.polygon( \
-				self.screen, \
-				self.get_arrow_color(self.positions[i], self.target[i]), \
-				arrowPoints, 0 \
-			)
-
 			# Draw the wheel
 			playerWheel = rot_center(self.wheel, self.positions[i])
-			self.screen.blit(\
+			self.screen.blit( \
 				playerWheel, \
 				[ \
 					playerWCenter - self.wheel.get_width()/2, \
@@ -95,15 +93,65 @@ class Lockpick(multiplayer.Minigame):
 				] \
 			)
 
-	def openSafe(self, player):
-		if (abs(self.positions[player] - self.target[player]) < self.SWEET_SPOT):
-			self.score[player] += 1
-		else:
-			self.score[player] -= 1
-			if self.score[player] < 0:
-				self.score[player] = 0
+			if (self.finished[i] == self.FINISHED['NOT']):
+				# Draw the arrow
+				arrowPoints = self.get_arrow_points(i)
 
-		self.target[player] = randint(0, 359)
+				pygame.draw.polygon( \
+					self.screen, \
+					self.get_arrow_color(self.positions[i], self.target[i]), \
+					arrowPoints, 0 \
+				)
+
+				# Draw the target arc
+				arcRect = pygame.Rect( \
+					playerWCenter - self.wheel.get_width()/2 + 15, \
+					playerHCenter - self.wheel.get_height()/2 + 15, \
+					self.wheel.get_width() - 30, \
+					self.wheel.get_height() - 30 \
+				)
+
+				pygame.draw.arc( \
+					self.screen, \
+					self.SWEET_COLOR, \
+					arcRect, \
+					deg_to_rad(self.positions[i] - self.target[i] - self.SWEET_SPOT + 90), \
+					deg_to_rad(self.positions[i] - self.target[i] + self.SWEET_SPOT + 90), \
+					10 \
+				)
+
+				# Draw the lock lights
+				for j in range(3):
+					pygame.draw.circle( \
+						self.screen, \
+						self.get_lock_light_color(i, j), \
+						[int(playerWCenter - 20 + 20*j), int(playerHCenter)], \
+						8 \
+					)
+
+			# Draw the finished mark
+			markPos = [int(playerWCenter - self.passMark.get_width()/2), playerHCenter + 150]
+			if (self.finished[i] == self.FINISHED['PASS']):
+				self.screen.blit(self.passMark, markPos)
+			elif (self.finished[i] == self.FINISHED['FAIL']):
+				self.screen.blit(self.failMark, markPos)
+
+	def openSafe(self, player):
+		distToTarget = abs(self.positions[player] - self.target[player])
+		if (distToTarget < self.SWEET_SPOT or distToTarget > 360 - self.SWEET_SPOT):
+			self.score[player] += 1
+			if self.score[player] == 3:
+				self.finished[player] = self.FINISHED['PASS']
+		else:
+			self.finished[player] = self.FINISHED['FAIL']
+
+		# Generate a new target
+		newTarget = self.target[player]
+		while (abs(newTarget - self.target[player]) < 45): # Ensure we don't generate a new target too close to the old one
+			newTarget = randint(0, 359)
+
+		self.target[player] = newTarget
+		print self.target
 		self.open_anim_position[player] = 0 # Start open safe anim
 
 	def get_arrow_color(self, pos, target):
@@ -112,16 +160,16 @@ class Lockpick(multiplayer.Minigame):
 		for diff in diffs:
 			if diff < self.SWEET_SPOT:
 				return self.SWEET_COLOR
-		for diff in diffs:
-			if (diff < self.NEAR_SPOT):
-				return self.NEAR_COLOR
 
 		return self.FAR_COLOR
 
 	def get_results(self):
-		return [self.score[0] >= self.score[1], self.score[0] <= self.score[1]]
+		return [self.score[0] >= 3, self.score[1] >= 3]
 
 	def get_arrow_points(self, player):
+		'''
+		Returns the points for the arrow poly for a given `player` according to the arrow animation
+		'''
 		playerWCenter = self.width * (0.5*player + 0.25)
 		playerHCenter = self.height * 0.5
 		animOffset = opensafe_anim_curve(float(self.open_anim_position[player]) / float(self.OPEN_ANIM_DURATION))
@@ -132,8 +180,20 @@ class Lockpick(multiplayer.Minigame):
 			(playerWCenter, playerHCenter - 120 + animOffset) \
 		)
 
+	def get_lock_light_color(self, player, light):
+		'''
+		Returns the color of the `light`nth light of a given `player`
+		'''
+		if (self.score[player] > light):
+			return self.SWEET_COLOR
+		else:
+			return self.FAR_COLOR
+
 def rot_center(image, angle):
-    """rotate an image while keeping its center and size http://pygame.org/wiki/RotateCenter"""
+    '''
+	Rotate an `image` surface `angle` degrees while keeping its center and size
+	@see http://pygame.org/wiki/RotateCente
+	'''
     orig_rect = image.get_rect()
     rot_image = pygame.transform.rotate(image, angle)
     rot_rect = orig_rect.copy()
@@ -143,3 +203,6 @@ def rot_center(image, angle):
 
 def opensafe_anim_curve(x):
 	return 20 * math.sin(x * math.pi)
+
+def deg_to_rad(deg):
+	return float(deg / 180.0 * math.pi)
