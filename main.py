@@ -4,7 +4,7 @@ import game
 
 def main():
     pygame.init()
-    pygame.display.set_caption("Arcade CS Games 2015")
+    pygame.display.set_caption("Arcade CS Games 2016")
     font = pygame.font.Font('res/font/ps2p.ttf', 32)
     border = pygame.display.set_mode((game.Game.SCREEN_WIDTH, game.Game.SCREEN_HEIGHT)) #, pygame.FULLSCREEN
 

@@ -7,7 +7,7 @@ import pygame
 import input_map
 
 class LeprechaunBeatemUp(multiplayer.Minigame):
-    name = 'Hit the Leprechaun!'
+    name = 'Hit the Green Virus!'
     max_duration = 10000
 
     def __init__(self, game):
