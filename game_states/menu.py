@@ -29,6 +29,7 @@ class Menu:
         self.players_is_ready = [False, False]
 
         # Gfx
+        self.gfx_background = pygame.image.load('./res/img/ui/background.jpg')
         self.gfx_header = pygame.image.load('./res/img/ui/header.png').convert_alpha()
         self.gfx_grid = pygame.image.load('./res/img/ui/menu.png').convert_alpha()
         self.gfx_vs = pygame.image.load('./res/img/ui/vs.png').convert_alpha()
@@ -38,6 +39,8 @@ class Menu:
             pygame.image.load('./res/img/ui/p2_selector.png').convert_alpha()
         ]
 
+
+
         # Text
         self.txt_repo = pygame.font.Font('res/font/ps2p.ttf', 11).render("github.com/dciets/Arcade-CS-Games", 0, (255, 255, 255))
         self.txt_ready = [pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (255, 0, 0)), pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (0, 0, 255))]
@@ -45,7 +48,7 @@ class Menu:
 
         ''' BLITTING '''
         # Background
-        self.game.border.fill((0, 0, 0))
+        self.game.border.blit(self.gfx_background, (0, 0))
         self.game.border.blit(self.gfx_header, (-5, 0))
 
         # Player infos
@@ -135,4 +138,3 @@ class Menu:
         self.game.players[0].university = self.selections[0][1]
         self.game.players[1].university = self.selections[1][1]
         self.game.state = splash.Splash(self.game)
-
