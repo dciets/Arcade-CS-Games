@@ -1,3 +1,4 @@
+from stay_in_the_ring.stay_in_the_ring import StayInTheRing
 from blackcat import BlackCat
 from spingame import SpinGame
 from mirrors.minigame import MirrorsMinigame
