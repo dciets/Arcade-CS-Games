@@ -46,7 +46,7 @@ class StayInTheRing(multiplayer.Minigame):
         for player in self.players:
             player.update(timeElapsed)
 
-        self.ring.update()
+        self.ring.update(timeElapsed)
         self.dealOutsideRingDamage()
         self.checkEndGame()
 
