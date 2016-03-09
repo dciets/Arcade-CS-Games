@@ -10,3 +10,4 @@ from chiotteclean import ChiotteGame
 from ultimate_pong.ultimate_pong import UltimatePong
 from ladders import LaddersMinigame
 from lockpick.game import Lockpick
+from kamehameha.minigame import KamehamehaMinigame
