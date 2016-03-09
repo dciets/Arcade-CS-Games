@@ -63,9 +63,9 @@ class Lockpick(multiplayer.Minigame):
                 if (self.finished[i] == self.FINISHED['NOT']):
                     if event.type == KEYDOWN:
                         if event.key == PLAYERS_MAPPING[i][LEFT]:
-                            self.velocities[i] = -self.speed
-                        elif event.key == PLAYERS_MAPPING[i][RIGHT]:
                             self.velocities[i] = self.speed
+                        elif event.key == PLAYERS_MAPPING[i][RIGHT]:
+                            self.velocities[i] = -self.speed
                         if event.key == PLAYERS_MAPPING[i][ACTION]:
                             self.open_safe(i)
 
