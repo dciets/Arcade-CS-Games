@@ -10,12 +10,11 @@ The arcade can have two player playing at once and has a 4-direction digital joy
 ## Ajouter un minigame
 Créer un nouveau module sous `/minigames/` et créer une classe dérivant de `multiplayer.Minigame` ou `singleplayer.Minigame`. Un jeu de type singleplayer consiste à un minigame joué tour par tour jusqu'à ce qu'un joueur ait 3 défaites. Un jeu multijoueur est joué par les deux joueurs simultanément.
 
-Finalement, importé la classe du jeu dans `/minigames/__init__.py`.
+Finalement, importer la classe du jeu dans `/minigames/__init__.py`.
 
-Chaque classe de minigame doivent définir l'attribut de classe `name` qui sera affiché aux joueurs.
+Chaque classe de minigame doit définir l'attribut de classe `name` qui sera affiché aux joueurs.
 
-
-Les méthode suivante peuvent être définit dans la classe de jeu:
+Les méthodes suivantes peuvent être définies dans la classe de jeu:
 
 *Create a new module under `/minigames/` and create a subclass for `multiplayer.Minigame` or `singleplayer.Minigame`. A singleplayer game is a game that is played turn by turn by each player until one player loses 3 times. A multiplayer game is played by the two players simultaneously.*
 
@@ -32,10 +31,10 @@ The name attribute must be overloaded by the minigame implementation. This attri
 ## Minigame instance attributes
 
 ### self.scores
-If your minigame keeps track of user-defined points during a minigame, your can use this attrribute. This attrribute follows the following syntax `self.scores = [player1_points, player2_points]`
+If your minigame keeps track of user-defined points during a minigame, your can use this attrribute. This attribute must be typed as `self.scores = [player1_points, player2_points]`
 
 ### self.frame
-Returns the number of frames elapsed since the start of the minigame. Every minigame run at a capped 30 FPS.
+Returns the number of frames elapsed since the start of the minigame. Every minigame runs at a capped 30 FPS.
 
 ### self.elapsed_ms
 Returns the number of milliseconds elapsed since the start of the minigame. One minigame `tick()` is roughly 33.33ms.
@@ -43,19 +42,19 @@ Returns the number of milliseconds elapsed since the start of the minigame. One 
 ## Minigame methods
 
 ### init(self)
-Méthode appelé avant une manche du jeu.
+Méthode appelée avant une manche du jeu.
 
 *Method called before the minigame starts.*
 
 ### tick(self)
-Méthode appelé à chaque boucle d'update.
+Méthode appelée à chaque boucle d'update.
 
 *Method called in the update loop.*
 
 ### get\_duration(self)
 Méthode retournant le temps de jeu total. Peut être généré à partir de `self.difficulty` pour diminuer le temps selon la difficulté.
 
-*Method that returns the total duration of the mini-game. Can be generated from self.difficulty to reduce the time and make teh mini-game harder.*
+*Method that returns the total duration of the mini-game. Can be generated from self.difficulty to reduce the time and make the mini-game harder.*
 
 ### get\_results(self) ou get\_result(self)
 Méthode retournant le résultat des joueurs ou du joueur dans le cas d'un jeu singleplayer.
