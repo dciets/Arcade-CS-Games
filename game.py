@@ -63,8 +63,10 @@ class Game:
         while self.running:
             if pygame.key.get_pressed()[pygame.K_ESCAPE]:
                 sys.exit()
+
             self.state.run()
             pygame.display.update()
+
 
     def stop(self):
         self.running = False
@@ -75,5 +77,3 @@ class Game:
     def overlay(self):
         if isinstance(self.state, OverlayedState):
             self.states[-1].display_hud()
-
-
