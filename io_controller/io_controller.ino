@@ -2,7 +2,6 @@ byte pins[] = {2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 bool flags[10];
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
 
   for (byte i = 0; i < 10; i++) {
@@ -26,13 +25,13 @@ void loop() {
 
   for (byte i = 0; i < 10; i++) {
     bool state = digitalRead(pins[i]) == HIGH;
-    
+
     if (state != flags[i]) {
       Serial.print(char((i << 1) | (state ? 0 : 1)));
-      
+
       flags[i] = state;
     }
   }
 
-  delay(1);
+  delay(10);
 }

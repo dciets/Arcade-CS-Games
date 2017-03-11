@@ -41,13 +41,14 @@ class Game:
     GAME_LEFT = BORDER_SIZE
     GAME_RIGHT = SCREEN_HEIGHT - BORDER_SIZE
 
-    def __init__(self, border, font):
+    def __init__(self, border, font, outputs):
         '''Init game state, player score, game count, etc...'''
         self.border = border
         self.screen = border.subsurface(Rect((Game.BORDER_SIZE, Game.BORDER_SIZE), (Game.SCREEN_WIDTH - 2 * Game.BORDER_SIZE, Game.SCREEN_HEIGHT - 2 * Game.BORDER_SIZE)))
         self.font = font
         self.gfx = gfx.Gfx(self.screen, font)
         self.state = menu.Menu(self)
+        self.outputs = outputs
         self.init()
 
     def init(self):
@@ -61,7 +62,7 @@ class Game:
     def run(self):
         self.running = True
         while self.running:
-            if pygame.key.get_pressed()[pygame.K_ESCAPE]:
+            if pygame.key.get_pressed()[pygame.K_q]:
                 sys.exit()
 
             self.state.run()
@@ -77,3 +78,14 @@ class Game:
     def overlay(self):
         if isinstance(self.state, OverlayedState):
             self.states[-1].display_hud()
+
+    def flash_outputs(self, results):
+        self.outputs.state[0] = not results[0]
+        self.outputs.state[1] = not results[1]
+        self.outputs.write()
+
+        pygame.time.delay(1000)
+
+        self.outputs.state[0] = False
+        self.outputs.state[1] = False
+        self.outputs.write()

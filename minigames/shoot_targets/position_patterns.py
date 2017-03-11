@@ -6,7 +6,6 @@ from target import Target
 
 target_rect = Target.image.get_rect()
 
-
 def sin_pattern(game):
     targets = []
     width, height = game.screen_rect.size

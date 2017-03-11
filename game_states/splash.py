@@ -10,12 +10,12 @@ import gfx
 
 class Splash(OverlayedState):
     MINIGAMES = []
-    _duration = 3
 
     '''Display the splash screen with some info in between minigames'''
-    def __init__(self, game):
+    def __init__(self, game, results=[True, True]):
         OverlayedState.__init__(self, game)
 
+        self.results = results
         self.started_at = datetime.now()
         self.screen = self.game.screen
         self.scrrct = self.screen.get_rect()
@@ -28,12 +28,6 @@ class Splash(OverlayedState):
     def run(self):
         pygame.event.clear()
 
-        if(self.started_at + timedelta(seconds=self._duration) < datetime.now()):
-            self.game.state = minigame.Minigame(self.game)
-
-        if any(p.lives <= 0 for p in self.game.players) and not self.game.second_turn:
-            self.game.state = endgame.EndGame(self.game)
-
         self.game.border.fill((0,0,0))
         self.display_hud()
 
@@ -43,3 +37,15 @@ class Splash(OverlayedState):
         # Display who's playing next for single player minigame
         if self.game.minigame.is_singleplayer():
             self.game.gfx.print_msg(self.game.players[self.game.active_player].university, midtop=(self.scrrct.centerx, self.scrrct.h - 100), color=gfx.RED if self.game.active_player == 0 else gfx.BLUE)
+
+        if any(p.lives <= 0 for p in self.game.players) and not self.game.second_turn:
+            self.game.state = endgame.EndGame(self.game, self.results)
+        else:
+
+            pygame.display.update()
+
+            self.game.flash_outputs(self.results)
+
+            pygame.time.delay(2000)
+
+            self.game.state = minigame.Minigame(self.game)

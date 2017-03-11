@@ -15,5 +15,3 @@ PLAYERS_MAPPING = [
 def get_player_keys(player):
     keys = pygame.key.get_pressed()
     return [keys[k] for k in PLAYERS_MAPPING[player]]
-
-

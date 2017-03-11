@@ -7,8 +7,9 @@ import menu
 
 class EndGame:
     '''Display end game score'''
-    def __init__(self, game):
+    def __init__(self, game, results):
         self.game = game
+        self.results = results
         self.font = pygame.font.Font('res/font/ps2p.ttf', 22)
         self.started_at = datetime.now()
         self.winner = -1
@@ -53,7 +54,12 @@ class EndGame:
             self.game.screen.blit(pts, pts_rect)
             self.game.screen.blit(new_score, new_score_rect)
 
-        if self.started_at + timedelta(seconds=10) < datetime.now():
-            self.game.init()
-            self.game.state = menu.Menu(self.game)
 
+        pygame.display.update()
+
+        self.game.flash_outputs(self.results)
+
+        pygame.time.delay(9000)
+
+        self.game.init()
+        self.game.state = menu.Menu(self.game)

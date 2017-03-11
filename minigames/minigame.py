@@ -119,4 +119,3 @@ class Minigame:
         player failed while a True result means that a player succeed
         '''
         return [True, True]
-
