@@ -19,8 +19,8 @@ class Menu:
         self.schools_scores = json.load(open('./res/schools_scores.json', 'r'))
         self.schools = sorted(self.schools_scores.keys())
         self.selections = [
-            15, # random.randint(0, len(self.schools) - 1),
-            15 # random.randint(0, len(self.schools) - 1)
+            random.randint(0, len(self.schools) - 1),
+            random.randint(0, len(self.schools) - 1)
         ]
 
         self.players_is_ready = [False, False]
@@ -37,7 +37,7 @@ class Menu:
 
         self.team_font = pygame.font.Font('res/font/ps2p.ttf', 30)
         self.txt_teams = [None, None]
-        self.colors = [(0xff, 0x26, 0x47), (0x00,0xea,0xcc)]
+        self.colors = [(0xff, 0x26, 0x47), (0x00, 0xea, 0xcc)]
         self.refresh_team(0)
         self.refresh_team(1)
 
@@ -55,7 +55,14 @@ class Menu:
         self.game.border.blit(self.gfx_grid, self.gfx_grid.get_rect(bottomright=(self.game.SCREEN_WIDTH - 5, self.game.SCREEN_HEIGHT - 15)))
 
     def update_selection(self, index):
-        self.game.border.blit(self.txt_teams[index], self.txt_teams[index].get_rect(center=(self.game.SCREEN_WIDTH/2 * index + self.game.SCREEN_WIDTH/4, self.game.SCREEN_HEIGHT * 0.75)))
+        x = self.game.SCREEN_WIDTH/2 * index + self.game.SCREEN_WIDTH/4
+        y = self.game.SCREEN_HEIGHT * 0.75
+        fill = self.colors[index]
+
+        self.arrow(x, y + 50, True, fill, width=50, linewidth=7, height=10)
+        self.arrow(x, y - 50, False, fill, width=50, linewidth=7, height=10)
+
+        self.game.border.blit(self.txt_teams[index], self.txt_teams[index].get_rect(center=(x, y)))
 
         if self.players_is_ready[index]:
             self.game.border.blit(self.txt_ready[index], self.txt_ready[index].get_rect(topleft=(index * 230 + 40, 190)))
@@ -88,6 +95,13 @@ class Menu:
         if event.key == input_map.PLAYERS_MAPPING[index][input_map.ACTION]:
             self.players_is_ready[index] = not self.players_is_ready[index]
 
+    def arrow(self, x, y, down, color, width=50, height=25, linewidth=5):
+        f = down and 1 or -1
+        points = [[x - width / 2, y - (height / 2) * f],
+                  [x, y + (height / 2) * f],
+                  [x + width / 2, y - (height / 2) * f]]
+
+        pygame.draw.lines(self.game.border, color, False, points, linewidth)
 
     def run(self):
         # Background
@@ -96,7 +110,6 @@ class Menu:
         self.game.border.blit(self.txt_repo, self.txt_repo.get_rect(bottomright=(self.game.SCREEN_WIDTH - 5, self.game.SCREEN_HEIGHT - 2)))
 
         self.show_top10()
-
 
         for i in range(2):
             self.update_selection(i)
