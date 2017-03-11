@@ -2,15 +2,22 @@ import serial
 from serial.tools import list_ports
 from pykeyboard import PyKeyboard
 
-ser = None
-l = [p for p in list_ports.comports()]
-for port in l:
-    if 'ttyUSB' in port.device:
-        ser = serial.Serial(port.device, 9600)
-        print port.device
-        break
+ports = list_ports.comports()
 k = PyKeyboard()
-while True:
-    s = ser.readline()
-    key = int(s.strip())
-    k.tap_key(key)
+keys = 'W A S D E U H J K I'.split()
+
+if ports:
+    ser = serial.Serial(ports[0].device, 115200)
+
+    while True:
+        c = ord(ser.read())
+        index = c >> 1
+        state = c & 1
+
+        if state == 1:
+            k.press_key(keys[index])
+        else:
+            k.release_key(keys[index])
+
+else:
+    print 'No serial ports found'
