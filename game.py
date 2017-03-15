@@ -47,6 +47,7 @@ class Game:
         self.screen = border.subsurface(Rect((Game.BORDER_SIZE, Game.BORDER_SIZE), (Game.SCREEN_WIDTH - 2 * Game.BORDER_SIZE, Game.SCREEN_HEIGHT - 2 * Game.BORDER_SIZE)))
         self.font = font
         self.gfx = gfx.Gfx(self.screen, font)
+        self.triggers = [True, True]
         self.state = menu.Menu(self)
         self.outputs = outputs
         self.init()
@@ -80,8 +81,8 @@ class Game:
             self.states[-1].display_hud()
 
     def flash_outputs(self, results):
-        self.outputs.state[0] = not results[0]
-        self.outputs.state[1] = not results[1]
+        self.outputs.state[0] = (not results[0]) and self.triggers[0]
+        self.outputs.state[1] = (not results[1]) and self.triggers[1]
         self.outputs.write()
 
         pygame.time.delay(1000)

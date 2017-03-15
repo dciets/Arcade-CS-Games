@@ -1,6 +1,7 @@
 from itertools import cycle, islice, tee, dropwhile
 import pygame
 from pygame.locals import *
+from pygame.transform import rotozoom
 import random
 import re
 import operator
@@ -32,8 +33,11 @@ class Menu:
 
         # Text
         self.txt_repo = pygame.font.Font('res/font/ps2p.ttf', 11).render("github.com/dciets/Arcade-CS-Games", 0, (255, 255, 255))
-        self.txt_ready = [pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (255, 0, 0)), pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (0, 0, 255))]
-        self.txt_not_ready = [pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (0, 0, 0)), pygame.font.Font('res/font/ps2p.ttf', 13).render("Ready!", 0, (0, 0, 0))]
+        self.txt_ready = [pygame.font.Font('res/font/ps2p.ttf', 42).render("READY", 0, (255, 255, 255)), pygame.font.Font('res/font/ps2p.ttf', 42).render("READY", 0, (255, 255, 255))]
+        for i in range(2):
+            self.txt_ready[i] = rotozoom(self.txt_ready[i], 35.0, 1.0)
+        self.txt_wet_mode = [pygame.font.Font('res/font/ps2p.ttf', 20).render("< Wet mode! >", 0, (255, 255, 0)), pygame.font.Font('res/font/ps2p.ttf', 20).render("< Wet mode! >", 0, (255, 255, 0))]
+        self.txt_dry_mode = [pygame.font.Font('res/font/ps2p.ttf', 20).render("< Dry mode! >", 0, (255, 255, 0)), pygame.font.Font('res/font/ps2p.ttf', 20).render("< Dry mode! >", 0, (255, 255, 0))]
 
         self.team_font = pygame.font.Font('res/font/ps2p.ttf', 30)
         self.txt_teams = [None, None]
@@ -65,9 +69,12 @@ class Menu:
         self.game.border.blit(self.txt_teams[index], self.txt_teams[index].get_rect(center=(x, y)))
 
         if self.players_is_ready[index]:
-            self.game.border.blit(self.txt_ready[index], self.txt_ready[index].get_rect(topleft=(index * 230 + 40, 190)))
+            self.game.border.blit(self.txt_ready[index], self.txt_ready[index].get_rect(center=(x, y)))
+
+        if self.game.triggers[index]:
+            self.game.border.blit(self.txt_wet_mode[index], self.txt_wet_mode[index].get_rect(center=(x, y - 100)))
         else:
-            self.game.border.blit(self.txt_not_ready[index], self.txt_not_ready[index].get_rect(topleft=(index * 230 + 40, 190)))
+            self.game.border.blit(self.txt_dry_mode[index], self.txt_dry_mode[index].get_rect(center=(x, y - 100)))
 
     def show_top10(self):
         i = 1
@@ -91,6 +98,8 @@ class Menu:
                 self.selections[index] = (self.selections[index] + 1) % len(self.schools)
                 self.refresh_team(index)
 
+            if event.key == input_map.PLAYERS_MAPPING[index][input_map.RIGHT] or event.key == input_map.PLAYERS_MAPPING[index][input_map.LEFT]:
+                self.game.triggers[index] = not self.game.triggers[index]
 
         if event.key == input_map.PLAYERS_MAPPING[index][input_map.ACTION]:
             self.players_is_ready[index] = not self.players_is_ready[index]
