@@ -14,3 +14,4 @@ from lockpick.game import Lockpick
 from kamehameha.minigame import KamehamehaMinigame
 from rope.rope import Rope
 from treeballz import TreeBallz
+from asteroid_showdown import AsteroidShowdown
