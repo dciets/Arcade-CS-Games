@@ -1,0 +1,401 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{d19f7b27-0b4b-4b68-b449-55123c3f2737}</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>main.py</StartupFile>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <Name>TreeBallz</Name>
+    <RootNamespace>TreeBallz</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+    <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <PtvsTargetsFile>$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets</PtvsTargetsFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="game_states\" />
+    <Folder Include="io_controller\" />
+    <Folder Include="minigames\" />
+    <Folder Include="minigames\cutlery_fall\" />
+    <Folder Include="minigames\its_raining_beer\" />
+    <Folder Include="minigames\kamehameha\" />
+    <Folder Include="minigames\kamehameha\entities\" />
+    <Folder Include="minigames\kamehameha\images\" />
+    <Folder Include="minigames\leprechaunBeatemUp\" />
+    <Folder Include="minigames\leprechaunBeatemUp\entities\" />
+    <Folder Include="minigames\lockpick\" />
+    <Folder Include="minigames\mirrors\" />
+    <Folder Include="minigames\mirrors\entities\" />
+    <Folder Include="minigames\mirrors\images\" />
+    <Folder Include="minigames\rope\" />
+    <Folder Include="minigames\shoot_targets\" />
+    <Folder Include="minigames\stay_in_the_ring\" />
+    <Folder Include="minigames\stay_in_the_ring\entities\" />
+    <Folder Include="minigames\ultimate_pong\" />
+    <Folder Include="res\" />
+    <Folder Include="res\font\" />
+    <Folder Include="res\img\" />
+    <Folder Include="res\img\blackcat\" />
+    <Folder Include="res\img\chiotte_clean\" />
+    <Folder Include="res\img\crackgame\" />
+    <Folder Include="res\img\cutleryFall\" />
+    <Folder Include="res\img\cutleryFall\button\" />
+    <Folder Include="res\img\cutleryFall\child\" />
+    <Folder Include="res\img\cutleryFall\cutlery\" />
+    <Folder Include="res\img\cutleryFall\man\" />
+    <Folder Include="res\img\cutleryFall\woman\" />
+    <Folder Include="res\img\its_raining_beer\" />
+    <Folder Include="res\img\ladders\" />
+    <Folder Include="res\img\leprechaunBeatemUp\" />
+    <Folder Include="res\img\lockpick\" />
+    <Folder Include="res\img\shoot_targets\" />
+    <Folder Include="res\img\spingame\" />
+    <Folder Include="res\img\stay_in_the_ring\" />
+    <Folder Include="res\img\treeballz\" />
+    <Folder Include="res\img\ui\" />
+    <Folder Include="res\img\ultimate_pong\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="game.py" />
+    <Compile Include="game_states\endgame.py" />
+    <Compile Include="game_states\menu.py" />
+    <Compile Include="game_states\minigame.py" />
+    <Compile Include="game_states\overlay_state.py" />
+    <Compile Include="game_states\splash.py" />
+    <Compile Include="game_states\__init__.py" />
+    <Compile Include="gfx.py" />
+    <Compile Include="input_map.py" />
+    <Compile Include="keypress_emu.py" />
+    <Compile Include="main.py" />
+    <Compile Include="minigames\blackcat.py" />
+    <Compile Include="minigames\chiotteclean.py" />
+    <Compile Include="minigames\crackgame.py" />
+    <Compile Include="minigames\cutlery_fall\Cutlery.py" />
+    <Compile Include="minigames\cutlery_fall\cutlery_fall.py" />
+    <Compile Include="minigames\cutlery_fall\people.py" />
+    <Compile Include="minigames\cutlery_fall\Player.py" />
+    <Compile Include="minigames\cutlery_fall\__init__.py" />
+    <Compile Include="minigames\its_raining_beer\beer.py" />
+    <Compile Include="minigames\its_raining_beer\beer_manager.py" />
+    <Compile Include="minigames\its_raining_beer\its_raining_beer.py" />
+    <Compile Include="minigames\its_raining_beer\player.py" />
+    <Compile Include="minigames\its_raining_beer\__init__.py" />
+    <Compile Include="minigames\kamehameha\entities\character.py" />
+    <Compile Include="minigames\kamehameha\entities\__init__.py" />
+    <Compile Include="minigames\kamehameha\minigame.py" />
+    <Compile Include="minigames\kamehameha\__init__.py" />
+    <Compile Include="minigames\ladders.py" />
+    <Compile Include="minigames\leprechaunBeatemUp\entities\coin.py" />
+    <Compile Include="minigames\leprechaunBeatemUp\entities\perso.py" />
+    <Compile Include="minigames\leprechaunBeatemUp\entities\persoLeprechaun.py" />
+    <Compile Include="minigames\leprechaunBeatemUp\entities\persoPlayer.py" />
+    <Compile Include="minigames\leprechaunBeatemUp\entities\sprite.py" />
+    <Compile Include="minigames\leprechaunBeatemUp\entities\__init__.py" />
+    <Compile Include="minigames\leprechaunBeatemUp\leprechaunBeatemUp.py" />
+    <Compile Include="minigames\leprechaunBeatemUp\__init__.py" />
+    <Compile Include="minigames\lockpick\game.py" />
+    <Compile Include="minigames\lockpick\__init__.py" />
+    <Compile Include="minigames\minigame.py" />
+    <Compile Include="minigames\mirrors\entities\blaster.py" />
+    <Compile Include="minigames\mirrors\entities\blaster_base.py" />
+    <Compile Include="minigames\mirrors\entities\bullet.py" />
+    <Compile Include="minigames\mirrors\entities\mirror.py" />
+    <Compile Include="minigames\mirrors\entities\__init__.py" />
+    <Compile Include="minigames\mirrors\minigame.py" />
+    <Compile Include="minigames\mirrors\__init__.py" />
+    <Compile Include="minigames\mtest.py" />
+    <Compile Include="minigames\multiplayer.py" />
+    <Compile Include="minigames\rope\player.py" />
+    <Compile Include="minigames\rope\rope.py" />
+    <Compile Include="minigames\rope\__init__.py" />
+    <Compile Include="minigames\shoot_targets\explosion_sprite.py" />
+    <Compile Include="minigames\shoot_targets\moving_patterns.py" />
+    <Compile Include="minigames\shoot_targets\player.py" />
+    <Compile Include="minigames\shoot_targets\position_patterns.py" />
+    <Compile Include="minigames\shoot_targets\shoot_targets.py" />
+    <Compile Include="minigames\shoot_targets\target.py" />
+    <Compile Include="minigames\shoot_targets\__init__.py" />
+    <Compile Include="minigames\singleplayer.py" />
+    <Compile Include="minigames\spingame.py" />
+    <Compile Include="minigames\stay_in_the_ring\entities\heart.py" />
+    <Compile Include="minigames\stay_in_the_ring\entities\perso.py" />
+    <Compile Include="minigames\stay_in_the_ring\entities\persoPlayer.py" />
+    <Compile Include="minigames\stay_in_the_ring\entities\ring.py" />
+    <Compile Include="minigames\stay_in_the_ring\entities\sprite.py" />
+    <Compile Include="minigames\stay_in_the_ring\entities\__init__.py" />
+    <Compile Include="minigames\stay_in_the_ring\stay_in_the_ring.py" />
+    <Compile Include="minigames\stay_in_the_ring\__init__.py" />
+    <Compile Include="minigames\stest.py" />
+    <Compile Include="minigames\treeballz.py" />
+    <Compile Include="minigames\ultimate_pong\ball.py" />
+    <Compile Include="minigames\ultimate_pong\bar.py" />
+    <Compile Include="minigames\ultimate_pong\ultimate_pong.py" />
+    <Compile Include="minigames\ultimate_pong\__init__.py" />
+    <Compile Include="minigames\__init__.py" />
+    <Compile Include="outputs.py" />
+    <Compile Include="player.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include=".gitattributes" />
+    <Content Include=".gitignore" />
+    <Content Include="game.pyc" />
+    <Content Include="game_states\endgame.pyc" />
+    <Content Include="game_states\menu.pyc" />
+    <Content Include="game_states\minigame.pyc" />
+    <Content Include="game_states\overlay_state.pyc" />
+    <Content Include="game_states\splash.pyc" />
+    <Content Include="game_states\__init__.pyc" />
+    <Content Include="gfx.pyc" />
+    <Content Include="input_map.pyc" />
+    <Content Include="io_controller\io_controller.ino" />
+    <Content Include="minigames\blackcat.pyc" />
+    <Content Include="minigames\chiotteclean.pyc" />
+    <Content Include="minigames\crackgame.pyc" />
+    <Content Include="minigames\cutlery_fall\Cutlery.pyc" />
+    <Content Include="minigames\cutlery_fall\cutlery_fall.pyc" />
+    <Content Include="minigames\cutlery_fall\people.pyc" />
+    <Content Include="minigames\cutlery_fall\Player.pyc" />
+    <Content Include="minigames\cutlery_fall\__init__.pyc" />
+    <Content Include="minigames\its_raining_beer\beer.pyc" />
+    <Content Include="minigames\its_raining_beer\beer_manager.pyc" />
+    <Content Include="minigames\its_raining_beer\its_raining_beer.pyc" />
+    <Content Include="minigames\its_raining_beer\player.pyc" />
+    <Content Include="minigames\its_raining_beer\__init__.pyc" />
+    <Content Include="minigames\kamehameha\entities\character.pyc" />
+    <Content Include="minigames\kamehameha\entities\__init__.pyc" />
+    <Content Include="minigames\kamehameha\images\background.png" />
+    <Content Include="minigames\kamehameha\images\left-0.png" />
+    <Content Include="minigames\kamehameha\images\left-b0.png" />
+    <Content Include="minigames\kamehameha\images\left-b1.png" />
+    <Content Include="minigames\kamehameha\images\left-b2.png" />
+    <Content Include="minigames\kamehameha\images\right-0.png" />
+    <Content Include="minigames\kamehameha\images\right-b0.png" />
+    <Content Include="minigames\kamehameha\images\right-b1.png" />
+    <Content Include="minigames\kamehameha\images\right-b2.png" />
+    <Content Include="minigames\kamehameha\minigame.pyc" />
+    <Content Include="minigames\kamehameha\__init__.pyc" />
+    <Content Include="minigames\ladders.pyc" />
+    <Content Include="minigames\leprechaunBeatemUp\entities\coin.pyc" />
+    <Content Include="minigames\leprechaunBeatemUp\entities\perso.pyc" />
+    <Content Include="minigames\leprechaunBeatemUp\entities\persoLeprechaun.pyc" />
+    <Content Include="minigames\leprechaunBeatemUp\entities\persoPlayer.pyc" />
+    <Content Include="minigames\leprechaunBeatemUp\entities\sprite.pyc" />
+    <Content Include="minigames\leprechaunBeatemUp\entities\__init__.pyc" />
+    <Content Include="minigames\leprechaunBeatemUp\leprechaunBeatemUp.pyc" />
+    <Content Include="minigames\leprechaunBeatemUp\__init__.pyc" />
+    <Content Include="minigames\lockpick\game.pyc" />
+    <Content Include="minigames\lockpick\__init__.pyc" />
+    <Content Include="minigames\minigame.pyc" />
+    <Content Include="minigames\mirrors\entities\blaster.pyc" />
+    <Content Include="minigames\mirrors\entities\blaster_base.pyc" />
+    <Content Include="minigames\mirrors\entities\bullet.pyc" />
+    <Content Include="minigames\mirrors\entities\mirror.pyc" />
+    <Content Include="minigames\mirrors\entities\__init__.pyc" />
+    <Content Include="minigames\mirrors\images\backdrop.png" />
+    <Content Include="minigames\mirrors\images\blaster1_1.png" />
+    <Content Include="minigames\mirrors\images\blaster1_2.png" />
+    <Content Include="minigames\mirrors\images\blaster1_3.png" />
+    <Content Include="minigames\mirrors\images\blaster1_4.png" />
+    <Content Include="minigames\mirrors\images\blaster2_1.png" />
+    <Content Include="minigames\mirrors\images\blaster2_2.png" />
+    <Content Include="minigames\mirrors\images\blaster2_3.png" />
+    <Content Include="minigames\mirrors\images\blaster2_4.png" />
+    <Content Include="minigames\mirrors\images\blaster_base.png" />
+    <Content Include="minigames\mirrors\images\bullet1.png" />
+    <Content Include="minigames\mirrors\images\bullet2.png" />
+    <Content Include="minigames\mirrors\images\los1_1.png" />
+    <Content Include="minigames\mirrors\images\los1_2.png" />
+    <Content Include="minigames\mirrors\images\los2_1.png" />
+    <Content Include="minigames\mirrors\images\los2_2.png" />
+    <Content Include="minigames\mirrors\images\mirror0.png" />
+    <Content Include="minigames\mirrors\images\mirror1.png" />
+    <Content Include="minigames\mirrors\images\mirror2.png" />
+    <Content Include="minigames\mirrors\images\mirror3.png" />
+    <Content Include="minigames\mirrors\images\mirror4.png" />
+    <Content Include="minigames\mirrors\images\mirror5.png" />
+    <Content Include="minigames\mirrors\images\mirror6.png" />
+    <Content Include="minigames\mirrors\images\mirror7.png" />
+    <Content Include="minigames\mirrors\images\mirror8.png" />
+    <Content Include="minigames\mirrors\images\mirror9.png" />
+    <Content Include="minigames\mirrors\images\poof1.png" />
+    <Content Include="minigames\mirrors\images\poof2.png" />
+    <Content Include="minigames\mirrors\images\poof3.png" />
+    <Content Include="minigames\mirrors\images\poof4.png" />
+    <Content Include="minigames\mirrors\images\poof5.png" />
+    <Content Include="minigames\mirrors\images\poof6.png" />
+    <Content Include="minigames\mirrors\images\poof7.png" />
+    <Content Include="minigames\mirrors\images\poof8.png" />
+    <Content Include="minigames\mirrors\minigame.pyc" />
+    <Content Include="minigames\mirrors\__init__.pyc" />
+    <Content Include="minigames\multiplayer.pyc" />
+    <Content Include="minigames\rope\player.pyc" />
+    <Content Include="minigames\rope\rope.pyc" />
+    <Content Include="minigames\rope\__init__.pyc" />
+    <Content Include="minigames\shoot_targets\explosion_sprite.pyc" />
+    <Content Include="minigames\shoot_targets\player.pyc" />
+    <Content Include="minigames\shoot_targets\position_patterns.pyc" />
+    <Content Include="minigames\shoot_targets\shoot_targets.pyc" />
+    <Content Include="minigames\shoot_targets\target.pyc" />
+    <Content Include="minigames\shoot_targets\__init__.pyc" />
+    <Content Include="minigames\spingame.pyc" />
+    <Content Include="minigames\stay_in_the_ring\entities\heart.pyc" />
+    <Content Include="minigames\stay_in_the_ring\entities\perso.pyc" />
+    <Content Include="minigames\stay_in_the_ring\entities\persoPlayer.pyc" />
+    <Content Include="minigames\stay_in_the_ring\entities\ring.pyc" />
+    <Content Include="minigames\stay_in_the_ring\entities\sprite.pyc" />
+    <Content Include="minigames\stay_in_the_ring\entities\__init__.pyc" />
+    <Content Include="minigames\stay_in_the_ring\stay_in_the_ring.pyc" />
+    <Content Include="minigames\stay_in_the_ring\__init__.pyc" />
+    <Content Include="minigames\treeballz.pyc" />
+    <Content Include="minigames\ultimate_pong\ball.pyc" />
+    <Content Include="minigames\ultimate_pong\bar.pyc" />
+    <Content Include="minigames\ultimate_pong\ultimate_pong.pyc" />
+    <Content Include="minigames\ultimate_pong\__init__.pyc" />
+    <Content Include="minigames\__init__.pyc" />
+    <Content Include="outputs.pyc" />
+    <Content Include="player.pyc" />
+    <Content Include="README.md" />
+    <Content Include="requirements.txt" />
+    <Content Include="res\font\LICENSE.txt" />
+    <Content Include="res\font\ps2p.ttf" />
+    <Content Include="res\img\blackcat\blood.png" />
+    <Content Include="res\img\blackcat\car_blue.png" />
+    <Content Include="res\img\blackcat\cat_1.png" />
+    <Content Include="res\img\blackcat\cat_2.png" />
+    <Content Include="res\img\blackcat\truck.png" />
+    <Content Include="res\img\chiotte_clean\balai.png" />
+    <Content Include="res\img\chiotte_clean\bowl.png" />
+    <Content Include="res\img\chiotte_clean\fat_turd00.png" />
+    <Content Include="res\img\chiotte_clean\low_turd00.png" />
+    <Content Include="res\img\chiotte_clean\med_turd00.png" />
+    <Content Include="res\img\chiotte_clean\no_turd00.png" />
+    <Content Include="res\img\crackgame\dead.png" />
+    <Content Include="res\img\crackgame\jump.png" />
+    <Content Include="res\img\crackgame\run0.png" />
+    <Content Include="res\img\crackgame\run1.png" />
+    <Content Include="res\img\crackgame\run2.png" />
+    <Content Include="res\img\cutleryFall\Background.png" />
+    <Content Include="res\img\cutleryFall\button\action.png" />
+    <Content Include="res\img\cutleryFall\button\down.png" />
+    <Content Include="res\img\cutleryFall\button\left.png" />
+    <Content Include="res\img\cutleryFall\button\right.png" />
+    <Content Include="res\img\cutleryFall\button\up.png" />
+    <Content Include="res\img\cutleryFall\child\child1.png" />
+    <Content Include="res\img\cutleryFall\child\child2.png" />
+    <Content Include="res\img\cutleryFall\child\child3.png" />
+    <Content Include="res\img\cutleryFall\child\child4.png" />
+    <Content Include="res\img\cutleryFall\cutlery\fork.png" />
+    <Content Include="res\img\cutleryFall\cutlery\knife.png" />
+    <Content Include="res\img\cutleryFall\cutlery\spoon.png" />
+    <Content Include="res\img\cutleryFall\man\man1.png" />
+    <Content Include="res\img\cutleryFall\man\man2.png" />
+    <Content Include="res\img\cutleryFall\man\man3.png" />
+    <Content Include="res\img\cutleryFall\man\man4.png" />
+    <Content Include="res\img\cutleryFall\woman\woman1.png" />
+    <Content Include="res\img\cutleryFall\woman\woman2.png" />
+    <Content Include="res\img\cutleryFall\woman\woman3.png" />
+    <Content Include="res\img\cutleryFall\woman\woman4.png" />
+    <Content Include="res\img\its_raining_beer\background.png" />
+    <Content Include="res\img\its_raining_beer\beer.png" />
+    <Content Include="res\img\its_raining_beer\p1_1.png" />
+    <Content Include="res\img\its_raining_beer\p1_2.png" />
+    <Content Include="res\img\its_raining_beer\p1_3.png" />
+    <Content Include="res\img\its_raining_beer\p1_4.png" />
+    <Content Include="res\img\its_raining_beer\p2_1.png" />
+    <Content Include="res\img\its_raining_beer\p2_2.png" />
+    <Content Include="res\img\its_raining_beer\p2_3.png" />
+    <Content Include="res\img\its_raining_beer\p2_4.png" />
+    <Content Include="res\img\ladders\bee.png" />
+    <Content Include="res\img\ladders\bg1.png" />
+    <Content Include="res\img\ladders\bg2.png" />
+    <Content Include="res\img\ladders\bg3.png" />
+    <Content Include="res\img\ladders\ladder.png" />
+    <Content Include="res\img\ladders\p1.png" />
+    <Content Include="res\img\ladders\p2.png" />
+    <Content Include="res\img\leprechaunBeatemUp\Background.png" />
+    <Content Include="res\img\leprechaunBeatemUp\Coin.png" />
+    <Content Include="res\img\leprechaunBeatemUp\Leprechaun.png" />
+    <Content Include="res\img\leprechaunBeatemUp\Player1.png" />
+    <Content Include="res\img\leprechaunBeatemUp\Player2.png" />
+    <Content Include="res\img\lockpick\fail.png" />
+    <Content Include="res\img\lockpick\pass.png" />
+    <Content Include="res\img\lockpick\wheel.png" />
+    <Content Include="res\img\shoot_targets\explosion.png" />
+    <Content Include="res\img\shoot_targets\flare.png" />
+    <Content Include="res\img\shoot_targets\player1.png" />
+    <Content Include="res\img\shoot_targets\player2.png" />
+    <Content Include="res\img\shoot_targets\target.png" />
+    <Content Include="res\img\spingame\back.png" />
+    <Content Include="res\img\spingame\front.png" />
+    <Content Include="res\img\spingame\left.png" />
+    <Content Include="res\img\spingame\right.png" />
+    <Content Include="res\img\stay_in_the_ring\Background.png" />
+    <Content Include="res\img\stay_in_the_ring\Heart.png" />
+    <Content Include="res\img\stay_in_the_ring\Player1.png" />
+    <Content Include="res\img\stay_in_the_ring\Player2.png" />
+    <Content Include="res\img\stay_in_the_ring\Ring.png" />
+    <Content Include="res\img\treeballz\Blue.png" />
+    <Content Include="res\img\treeballz\BlueBullet.png" />
+    <Content Include="res\img\treeballz\BlueF.png" />
+    <Content Include="res\img\treeballz\Panel.png" />
+    <Content Include="res\img\treeballz\Red.png" />
+    <Content Include="res\img\treeballz\RedBullet.png" />
+    <Content Include="res\img\treeballz\RedF.png" />
+    <Content Include="res\img\ui\background.jpg" />
+    <Content Include="res\img\ui\bomb.png" />
+    <Content Include="res\img\ui\brock.png" />
+    <Content Include="res\img\ui\concordia.png" />
+    <Content Include="res\img\ui\ets.png" />
+    <Content Include="res\img\ui\guelph.png" />
+    <Content Include="res\img\ui\header.png" />
+    <Content Include="res\img\ui\heart.png" />
+    <Content Include="res\img\ui\laurentian.png" />
+    <Content Include="res\img\ui\manitoba.png" />
+    <Content Include="res\img\ui\mcgill.png" />
+    <Content Include="res\img\ui\menu.png" />
+    <Content Include="res\img\ui\minigame_overlay.png" />
+    <Content Include="res\img\ui\ottawa.png" />
+    <Content Include="res\img\ui\p1_selector.png" />
+    <Content Include="res\img\ui\p2_selector.png" />
+    <Content Include="res\img\ui\poly.png" />
+    <Content Include="res\img\ui\queens.png" />
+    <Content Include="res\img\ui\rochester.png" />
+    <Content Include="res\img\ui\score1.png" />
+    <Content Include="res\img\ui\score2.png" />
+    <Content Include="res\img\ui\sherbrooke.png" />
+    <Content Include="res\img\ui\shippensburg.png" />
+    <Content Include="res\img\ui\udem.png" />
+    <Content Include="res\img\ui\ulaval.png" />
+    <Content Include="res\img\ui\uqac.png" />
+    <Content Include="res\img\ui\uqam.png" />
+    <Content Include="res\img\ui\uqo.png" />
+    <Content Include="res\img\ui\vs.png" />
+    <Content Include="res\img\ui\windsor.png" />
+    <Content Include="res\img\ui\yorku.png" />
+    <Content Include="res\img\ultimate_pong\ball.png" />
+    <Content Include="res\schools_scores.json" />
+  </ItemGroup>
+  <Import Condition="Exists($(PtvsTargetsFile))" Project="$(PtvsTargetsFile)" />
+  <Import Condition="!Exists($(PtvsTargetsFile))" Project="$(MSBuildToolsPath)\Microsoft.Common.targets" />
+  <!-- Uncomment the CoreCompile target to enable the Build command in
+       Visual Studio and specify your pre- and post-build commands in
+       the BeforeBuild and AfterBuild targets below. -->
+  <!--<Target Name="CoreCompile" />-->
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+</Project>
