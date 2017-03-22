@@ -16,3 +16,4 @@ from rope.rope import Rope
 from treeballz import TreeBallz
 from asteroid_showdown import AsteroidShowdown
 from islandfight import IslandFight
+from hotpotato import HotPotato
