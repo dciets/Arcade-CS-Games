@@ -13,8 +13,8 @@ class HotPotato(minigame.Minigame):
     name = "PASS THE BOMB!!"
     MIN_DURATION = 10
     MAX_DURATION = 25
-    MIN_CONTROLS_SEQUENCE = 4
-    MAX_CONTROLS_SEQUENCE = 6
+    MIN_CONTROLS_SEQUENCE = 3
+    MAX_CONTROLS_SEQUENCE = 5
     BOMB_DIMENSIONS = 200
     CONTROL_DIMENSION = 80
     CONTROLS_COUNT = 5
@@ -141,3 +141,5 @@ class HotPotato(minigame.Minigame):
                             self.passBomb()
                             self.generateControlSequence()
                             break #prevents multiple keys to be correctly input in the same frame
+                    else:
+                        self.controlToPress = 0
